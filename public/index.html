@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Captain Caption</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="https://fonts.googleapis.com/css?family=Dosis:800" rel="stylesheet">
+</head>
+<body>
+  <nav role="navigation" style="background-color:#0081af">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo white-text">Captain Caption</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="learnMore white-text">Learn More</a></li>
+        <li><a class="modal-trigger white-text" href="#login">Login</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav" style="background-color:#0081af">
+        <li><a class="learnMore white-text">Learn More</a></li>
+        <li><a class="modal-trigger white-text" href="#login">Login</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse white-text"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="search" type="search" class="validate">
+          <label for="search">Search by Topic</label>
+          <i class="material-icons">search</i>
+        </div>
+      </div>
+
+      <div class="row center-align">
+        <h4>Search Results for "{{something}}"</h4>
+        <br>
+      </div>
+      <div class="row center-align">
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+      </div>
+      <br>
+      <div class="row center-align">
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+        <div class="col s12 m4 valign"><img src="assets/images/filler.jpg" style="width:250px"/></div>
+      </div>
+      <br>
+      <div class="row center-align">
+        <div class="col s12 m4"></div>
+        <div class="col s12 m4">
+          <a class="waves-effect waves-light btn" style="background-color:#0081af">Load More</a>
+        </div>
+        <div class="col s12 m4"></div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light" style="text-shadow: 3px 3px 7px #000">Make your classroom accessible by finding videos exclusively with captions.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="assets/images/background2.jpg" alt="Classroom"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+
+      <div class="row" id="aboutUs">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Why Captions?</h4>
+          <p class="left-align light">As a high school sign language interpreter, every day I see the struggles of finding good quality videos that also have captions.  Closed captions are crucial to our students’ success and good ones are often hard to find.  That’s why I made Captain Caption, a website where teachers can access hundreds of videos with closed captions.  Captions aren’t just helpful for the Deaf and Hard of Hearing community, they are also beneficial to English language learners, students who have a hard time concentrating, and students with learning disabilities.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light" style="text-shadow: 3px 3px 7px #000">Enrich your students’ comprehension <br> and help them with the tools they need to succeed.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="assets/images/background3.jpg" alt="Desks"></div>
+  </div>
+
+  <footer class="page-footer" style="background-color:#0081af">
+    <div class="container">
+      <div class="row">
+        <div class="col l9 s12">
+          <h5 class="white-text">About Us</h5>
+          <p class="grey-text text-lighten-4">Captain Caption was founded by Monica Szabo, a student at the University of Texas in Austin's Full-Stack Flex Program Coding Bootcamp, who is currently working as a sign language interpreter at a high school in North Austin.</p>
+
+
+        </div>
+
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul class="default">
+            <li><a class="connectLink modal-trigger" href="#emailMe">Email</a></li>
+            <li><a class="connectLink" href="https://github.com/MonicaSzabo" target="_blank">GitHub</a></li>
+            <li><a class="connectLink" href="https://www.linkedin.com/in/monicaszabo" target="_blank">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      &copy; 2016 <a style="color:#2d3047" href="http://www.monicaszabo.com" target="_blank">Monica Szabo</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Email Me Modal -->
+  <div id="emailMe" class="modal">
+    <div class="modal-content">
+      <h4>Send me an Email!</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <p>A bunch of text</p>
+      <p class="text-center">Not a member? Sign Up!</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="assets/js/materialize.js"></script>
+  <script src="assets/js/init.js"></script>
+
+  </body>
+</html>
