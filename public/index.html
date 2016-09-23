@@ -9,12 +9,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="https://fonts.googleapis.com/css?family=Dosis:800" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 <body>
   <nav role="navigation" style="background-color:#0081af">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo white-text">Captain Caption</a>
+      <a id="logo-container" href="#" class="brand-logo white-text">Captain Caption</a><img src="assets/images/Captain-Caption-sm.png" alt="Captain Caption" id="topCapLogo"/>
       <ul class="right hide-on-med-and-down">
         <li><a class="learnMore white-text">Learn More</a></li>
         <li><a class="modal-trigger white-text" href="#login">Login</a></li>
@@ -29,9 +29,10 @@
   </nav>
 
   <div class="container">
-    <div class="section">
 
-      <div class="row">
+      <div id="app"></div>
+
+      <!-- <div class="row">
         <div class="input-field col s12">
           <input id="search" type="search" class="validate">
           <label for="search">Search by Topic</label>
@@ -64,8 +65,9 @@
       </div>
 
     </div>
-  </div>
+  </div> -->
 
+  </div>
 
   <div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
@@ -85,7 +87,7 @@
         <div class="col s12 center">
           <h3><i class="mdi-content-send brown-text"></i></h3>
           <h4>Why Captions?</h4>
-          <p class="left-align light">As a high school sign language interpreter, every day I see the struggles of finding good quality videos that also have captions.  Closed captions are crucial to our students’ success and good ones are often hard to find.  That’s why I made Captain Caption, a website where teachers can access hundreds of videos with closed captions.  Captions aren’t just helpful for the Deaf and Hard of Hearing community, they are also beneficial to English language learners, students who have a hard time concentrating, and students with learning disabilities.
+          <p class="left-align light">As a high school sign language interpreter, every day I see the struggles of finding good quality videos that also have captions.  Closed captions are crucial to our students’ success and good ones are often hard to find.  That’s why I made Captain Caption, a website where teachers can access hundreds of videos with closed captions.  Captions aren’t just helpful for the Deaf and Hard of Hearing community, they are also beneficial to English language learners, easily distracted students, and students with learning disabilities.
           </p>
         </div>
       </div>
@@ -98,7 +100,7 @@
     <div class="section no-pad-bot">
       <div class="container">
         <div class="row center">
-          <h5 class="header col s12 light" style="text-shadow: 3px 3px 7px #000">Enrich your students’ comprehension <br> and help them with the tools they need to succeed.</h5>
+          <h5 class="header col s12 light" style="text-shadow: 3px 3px 7px #000">Enrich your students’ comprehension <br> and provide them with the tools they need to succeed.</h5>
         </div>
       </div>
     </div>
@@ -110,7 +112,7 @@
       <div class="row">
         <div class="col l9 s12">
           <h5 class="white-text">About Us</h5>
-          <p class="grey-text text-lighten-4">Captain Caption was founded by Monica Szabo, a student at the University of Texas in Austin's Full-Stack Flex Program Coding Bootcamp, who is currently working as a sign language interpreter at a high school in North Austin.</p>
+          <p class="grey-text text-lighten-4">Captain Caption was founded by Monica Szabo, a student at the University of Texas in Austin's Full-Stack Coding Bootcamp, who is currently working as a sign language interpreter at a high school in North Austin.</p>
 
 
         </div>
@@ -122,6 +124,7 @@
             <li><a class="connectLink" href="https://github.com/MonicaSzabo" target="_blank">GitHub</a></li>
             <li><a class="connectLink" href="https://www.linkedin.com/in/monicaszabo" target="_blank">LinkedIn</a></li>
           </ul>
+          <img src="assets/images/Captain-Caption-sm.png" alt="Captain Caption" id="bottomCapLogo"/>
         </div>
       </div>
     </div>
@@ -160,6 +163,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="assets/js/materialize.js"></script>
   <script src="assets/js/init.js"></script>
+  <script src="bundle.js"></script>
 
   </body>
 </html>

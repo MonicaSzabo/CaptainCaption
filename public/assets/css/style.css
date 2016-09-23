@@ -57,7 +57,7 @@ footer.page-footer {
 }
 
 .brand-logo {
-  font-family: 'Dosis', sans-serif;
+  /*font-family: 'Montserrat', sans-serif;*/
   color: #2d3047;
 }
 
@@ -67,4 +67,18 @@ a.connectLink {
 
 a.connectLink:hover {
   color: #2d3047;
+}
+
+
+#topCapLogo {
+  width: 100px;
+  margin-left: -13%;
+  margin-top: 5px;
+}
+
+#bottomCapLogo {
+  width: 100px;
+  float: right;
+  margin-right: -40%;
+  margin-top: -129px;
 }

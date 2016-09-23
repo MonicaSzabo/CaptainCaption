@@ -8,8 +8,6 @@ var Form = React.createClass({
 	getInitialState: function(){
 		return {
 			topic: "",
-			startYear: "",
-			endYear: ""
 		}
 	},
 
@@ -27,7 +25,7 @@ var Form = React.createClass({
 	handleClick: function(){
 	
 		// Set the parent to have the search term
-		this.props.setTerm(this.state.topic, this.state.startYear, this.state.endYear);
+		this.props.setTerm(this.state.topic);
 
 	},
 
@@ -35,32 +33,12 @@ var Form = React.createClass({
 	render: function(){
 
 		return(
-
-			<div className="panel panel-primary">
-				<div className="panel-heading">
-					<h2 className="panel-title text-center"><strong>Search</strong></h2>
-				</div>
-				<div className="panel-body text-center">
-
-						<form>
-							<div className="form-group">
-								<h4 className=""><strong>Topic</strong></h4>
-								<input type="text" className="form-control text-center" id="topic" onChange= {this.handleChange} required/>
-								<br />
-
-								<h4 className=""><strong>Start Year</strong></h4>
-								<input type="text" className="form-control text-center" id="startYear" onChange= {this.handleChange} required/>
-								<br />
-
-								<h4 className=""><strong>End Year</strong></h4>
-								<input type="text" className="form-control text-center" id="endYear" onChange= {this.handleChange} required/>
-								<br />
-								
-								<button type="button" className="btn btn-primary" onClick={this.handleClick}>Search</button>
-							</div>
-
-						</form>
-				</div>
+			<div className="searchForm">
+				<form className="input-field col s12">
+					<label htmlFor="search">Search by Topic</label>
+				    <input id="search" type="search" className="validate" onChange= {this.handleChange}/>
+				    <i className="material-icons">search</i>
+				</form>
 			</div>
 		)
 	}

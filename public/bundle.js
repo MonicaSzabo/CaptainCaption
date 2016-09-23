@@ -223,25 +223,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -262,6 +277,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -19758,19 +19778,16 @@
 		getInitialState: function getInitialState() {
 			return {
 				topic: "",
-				startYear: "",
-				endYear: "",
 				results: [],
 				savedArticles: []
 			};
 		},
 
 		// We use this function to allow children to update the parent with searchTerms.
-		setTerm: function setTerm(tpc, stYr, endYr) {
+		setTerm: function setTerm(topic) {
+			console.log("is this hitting?");
 			this.setState({
-				topic: tpc,
-				startYear: stYr,
-				endYear: endYr
+				topic: topic
 			});
 		},
 
@@ -19805,7 +19822,7 @@
 			if (prevState.topic != this.state.topic) {
 				console.log("UPDATED");
 
-				helpers.runQuery(this.state.topic, this.state.startYear, this.state.endYear).then(function (data) {
+				helpers.runQuery(this.state.topic).then(function (data) {
 					console.log(data);
 					if (data != this.state.results) {
 						this.setState({
@@ -19828,25 +19845,7 @@
 		render: function render() {
 			return React.createElement(
 				'div',
-				{ className: 'container' },
-				React.createElement(
-					'div',
-					{ className: 'row' },
-					React.createElement(
-						'div',
-						{ className: 'jumbotron', style: { 'backgroundImage': 'url(./assets/images/newspaper.jpg)', 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'backgroundSize': '100% 100%', 'backgroundAttachment': 'fixed' } },
-						React.createElement(
-							'h2',
-							{ className: 'text-center', style: { 'color': 'white', 'textShadow': '3px 3px 10px black', 'fontSize': '54px' } },
-							'New York Times Article Scrubber'
-						),
-						React.createElement(
-							'p',
-							{ className: 'text-center', style: { 'color': 'white', 'textShadow': '3px 3px 10px black', 'fontSize': '24px' } },
-							'Search for and save articles of interest!'
-						)
-					)
-				),
+				{ className: 'section' },
 				React.createElement(
 					'div',
 					{ className: 'row' },
@@ -19854,13 +19853,68 @@
 				),
 				React.createElement(
 					'div',
-					{ className: 'row' },
-					React.createElement(Results, { results: this.state.results, saveArticle: this.saveArticle })
+					{ className: 'row center-align' },
+					React.createElement(
+						'h4',
+						null,
+						'Search Results for something'
+					),
+					React.createElement('br', null)
 				),
 				React.createElement(
 					'div',
-					{ className: 'row' },
-					React.createElement(Saved, { savedArticles: this.state.savedArticles, deleteArticle: this.deleteArticle })
+					{ className: 'row center-align' },
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					),
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					),
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					)
+				),
+				React.createElement('br', null),
+				React.createElement(
+					'div',
+					{ className: 'row center-align' },
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					),
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					),
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4 valign' },
+						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
+					)
+				),
+				React.createElement('br', null),
+				React.createElement(
+					'div',
+					{ className: 'row center-align' },
+					React.createElement('div', { className: 'col s12 m4' }),
+					React.createElement(
+						'div',
+						{ className: 'col s12 m4' },
+						React.createElement(
+							'a',
+							{ className: 'waves-effect waves-light btn', style: { backgroundColor: '#0081af' } },
+							'Load More'
+						)
+					),
+					React.createElement('div', { className: 'col s12 m4' })
 				)
 			);
 		}
@@ -21097,9 +21151,7 @@
 		// Here we set a generic state associated with the text being searched for
 		getInitialState: function getInitialState() {
 			return {
-				topic: "",
-				startYear: "",
-				endYear: ""
+				topic: ""
 			};
 		},
 
@@ -21116,7 +21168,7 @@
 		handleClick: function handleClick() {
 
 			// Set the parent to have the search term
-			this.props.setTerm(this.state.topic, this.state.startYear, this.state.endYear);
+			this.props.setTerm(this.state.topic);
 		},
 
 		// Here we render the function
@@ -21124,68 +21176,20 @@
 
 			return React.createElement(
 				"div",
-				{ className: "panel panel-primary" },
+				{ className: "searchForm" },
 				React.createElement(
-					"div",
-					{ className: "panel-heading" },
+					"form",
+					{ className: "input-field col s12" },
 					React.createElement(
-						"h2",
-						{ className: "panel-title text-center" },
-						React.createElement(
-							"strong",
-							null,
-							"Search"
-						)
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "panel-body text-center" },
+						"label",
+						{ htmlFor: "search" },
+						"Search by Topic"
+					),
+					React.createElement("input", { id: "search", type: "search", className: "validate", onChange: this.handleChange }),
 					React.createElement(
-						"form",
-						null,
-						React.createElement(
-							"div",
-							{ className: "form-group" },
-							React.createElement(
-								"h4",
-								{ className: "" },
-								React.createElement(
-									"strong",
-									null,
-									"Topic"
-								)
-							),
-							React.createElement("input", { type: "text", className: "form-control text-center", id: "topic", onChange: this.handleChange, required: true }),
-							React.createElement("br", null),
-							React.createElement(
-								"h4",
-								{ className: "" },
-								React.createElement(
-									"strong",
-									null,
-									"Start Year"
-								)
-							),
-							React.createElement("input", { type: "text", className: "form-control text-center", id: "startYear", onChange: this.handleChange, required: true }),
-							React.createElement("br", null),
-							React.createElement(
-								"h4",
-								{ className: "" },
-								React.createElement(
-									"strong",
-									null,
-									"End Year"
-								)
-							),
-							React.createElement("input", { type: "text", className: "form-control text-center", id: "endYear", onChange: this.handleChange, required: true }),
-							React.createElement("br", null),
-							React.createElement(
-								"button",
-								{ type: "button", className: "btn btn-primary", onClick: this.handleClick },
-								"Search"
-							)
-						)
+						"i",
+						{ className: "material-icons" },
+						"search"
 					)
 				)
 			);
@@ -21371,49 +21375,56 @@
 	// Include the axios package for performing HTTP requests (promise based alternative to request)
 	var axios = __webpack_require__(160);
 
-	// New York Times API
-	var nytAPI = "097be422255e45a18b6864a8176f4a6c";
+	// YouTube API
+	var youtubeAPI = "AIzaSyDO07X4nG5oRHh5hOmOOyUvEuME6EeEMpY";
 
 	// Helper Functions
 	var helpers = {
 
-		runQuery: function runQuery(topic, startYear, endYear) {
+					runQuery: function runQuery(query) {
 
-			//Figure out the geolocation
-			var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q=" + topic + "&begin_date=" + startYear + "0101&end_date=" + endYear + "0101";
+									console.log("is runQuery hitting?");
 
-			return axios.get(queryURL).then(function (response) {
+									var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&q=" + query;
 
-				var newResults = [];
-				var fullResults = response.data.response.docs;
-				var counter = 0;
+									return axios.get(queryURL).then(function (data) {
 
-				//Gets first 5 articles that have all 3 components
-				for (var i = 0; i < fullResults.length; i++) {
+													var nextPageToken = data.nextPageToken;
+													var prevPageToken = data.prevPageToken;
 
-					if (counter > 4) {
-						return newResults;
+													console.log(data);
+
+													$.each(data.items);
+
+													// var newResults = [];
+													// var fullResults = response.data.response.docs;
+													// var counter = 0;
+
+													// for(var i = 0; i < fullResults.length; i++){
+
+													// 	if(counter > 4) {
+													// 		return newResults;
+													// 	}
+
+													// 	if(fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
+													// 		newResults.push(fullResults[counter]);
+													// 		counter++;
+													// 	}
+													// }
+
+													// return newResults;
+									});
+					},
+
+					// This function posts saved articles to our database.
+					postArticle: function postArticle(title, date, url) {
+
+									axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
+
+													console.log("Posted to MongoDB");
+													return results;
+									});
 					}
-
-					if (fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
-						newResults.push(fullResults[counter]);
-						counter++;
-					}
-				}
-
-				return newResults;
-			});
-		},
-
-		// This function posts saved articles to our database.
-		postArticle: function postArticle(title, date, url) {
-
-			axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
-
-				console.log("Posted to MongoDB");
-				return results;
-			});
-		}
 
 	};
 

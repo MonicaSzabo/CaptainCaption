@@ -19,19 +19,16 @@ var Main = React.createClass({
 	getInitialState: function(){
 		return {
 			topic: "",
-			startYear: "",
-			endYear: "",
 			results: [],
 			savedArticles: []
 		}
 	},	
 
 	// We use this function to allow children to update the parent with searchTerms.
-	setTerm: function(tpc, stYr, endYr){
+	setTerm: function(topic){
+		console.log("is this hitting?");
 		this.setState({
-			topic: tpc,
-			startYear: stYr,
-			endYear: endYr
+			topic: topic,
 		})
 	},
 
@@ -68,7 +65,7 @@ var Main = React.createClass({
 		if(prevState.topic != this.state.topic){
 			console.log("UPDATED");
 
-			helpers.runQuery(this.state.topic, this.state.startYear, this.state.endYear)
+			helpers.runQuery(this.state.topic)
 				.then(function(data){
 					console.log(data);
 					if (data != this.state.results)
@@ -94,33 +91,39 @@ var Main = React.createClass({
 	render: function(){
 		return(
 
-			<div className="container">
+			  <div className="section">
 
-				<div className="row">
-
-					<div className="jumbotron" style={{'backgroundImage': 'url(./assets/images/newspaper.jpg)', 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'backgroundSize': '100% 100%', 'backgroundAttachment': 'fixed'}}>
-						<h2 className="text-center" style={{'color': 'white', 'textShadow': '3px 3px 10px black', 'fontSize': '54px'}}>New York Times Article Scrubber</h2>
-						<p className="text-center" style={{'color': 'white', 'textShadow': '3px 3px 10px black', 'fontSize': '24px'}}>Search for and save articles of interest!</p>
-					</div>
-				</div>
-				<div className="row">
+			    <div className="row">
 
 					<Form setTerm={this.setTerm}/>
 
 				</div>
 
-				<div className="row">
-			
-					<Results results={this.state.results} saveArticle={this.saveArticle}/>
+			    <div className="row center-align">
+			      <h4>Search Results for something</h4>
+			      <br />
+			    </div>
+			    <div className="row center-align">
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			    </div>
+			    <br />
+			    <div className="row center-align">
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			    </div>
+			    <br />
+			    <div className="row center-align">
+			      <div className="col s12 m4"></div>
+			      <div className="col s12 m4">
+			        <a className="waves-effect waves-light btn" style={{backgroundColor:'#0081af'}}>Load More</a>
+			      </div>
+			      <div className="col s12 m4"></div>
+			    </div>
 
-				</div>
-
-				<div className="row">
-				
-					<Saved savedArticles={this.state.savedArticles} deleteArticle={this.deleteArticle} />
-
-				</div>
-			</div>
+			  </div>
 		)
 	}
 });
