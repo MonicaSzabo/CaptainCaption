@@ -19777,41 +19777,40 @@
 		// Here we set a generic state associated with the number of clicks
 		getInitialState: function getInitialState() {
 			return {
-				topic: "",
-				results: [],
-				savedArticles: []
+				topic: "puppies",
+				results: ["https://www.youtube.com/embed/1GJqfyzfCWU?cc_load_policy=1", "https://www.youtube.com/embed/0JboM-STb4E?cc_load_policy=1", "https://www.youtube.com/embed/5wdgrEGE50Q?cc_load_policy=1", "https://www.youtube.com/embed/ZCVa_ngrZBY?cc_load_policy=1", "https://www.youtube.com/embed/aQUPkOfSGq8?cc_load_policy=1", "https://www.youtube.com/embed/U8L0NlstyhU?cc_load_policy=1"],
+				savedVideos: []
 			};
 		},
 
 		// We use this function to allow children to update the parent with searchTerms.
 		setTerm: function setTerm(topic) {
-			console.log("is this hitting?");
 			this.setState({
 				topic: topic
 			});
 		},
 
-		saveArticle: function saveArticle(title, date, url) {
-			helpers.postArticle(title, date, url);
-			this.getArticle();
+		saveVideo: function saveVideo(title, date, url) {
+			helpers.postVideo(title, date, url);
+			this.getVideo();
 		},
 
-		deleteArticle: function deleteArticle(article) {
-			console.log(article);
-			axios.delete('/api/saved/' + article._id).then(function (response) {
+		deleteVideo: function deleteVideo(video) {
+			console.log(video);
+			axios.delete('/api/saved/' + video._id).then(function (response) {
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 				return response;
 			}.bind(this));
 
-			this.getArticle();
+			this.getVideo();
 		},
 
-		getArticle: function getArticle() {
+		getVideo: function getVideo() {
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 			}.bind(this));
 		},
@@ -19823,7 +19822,6 @@
 				console.log("UPDATED");
 
 				helpers.runQuery(this.state.topic).then(function (data) {
-					console.log(data);
 					if (data != this.state.results) {
 						this.setState({
 							results: data
@@ -19836,7 +19834,7 @@
 		componentDidMount: function componentDidMount() {
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 			}.bind(this));
 		},
@@ -19857,64 +19855,22 @@
 					React.createElement(
 						'h4',
 						null,
-						'Search Results for something'
+						'Results for "',
+						this.state.topic,
+						'"'
 					),
 					React.createElement('br', null)
 				),
 				React.createElement(
 					'div',
-					{ className: 'row center-align' },
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'row center-align' },
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4 valign' },
-						React.createElement('img', { src: 'assets/images/filler.jpg', style: { width: 250 } })
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'row center-align' },
-					React.createElement('div', { className: 'col s12 m4' }),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m4' },
-						React.createElement(
-							'a',
-							{ className: 'waves-effect waves-light btn', style: { backgroundColor: '#0081af' } },
-							'Load More'
-						)
-					),
-					React.createElement('div', { className: 'col s12 m4' })
+					{ className: 'row center-align', style: { width: 900 } },
+					this.state.results.map(function (url, index) {
+						return React.createElement(
+							'div',
+							{ className: 'video', style: ({ margin: 20 }, { display: 'inline-block' }) },
+							React.createElement('iframe', { width: '250', src: url, id: index, frameBorder: '0', allowFullScreen: true })
+						);
+					})
 				)
 			);
 		}
@@ -21157,7 +21113,6 @@
 
 		// This function will respond to the user input 
 		handleChange: function handleChange(event) {
-
 			// Here we create syntax to capture any change in text to the query terms (pre-search).
 			var newState = {};
 			newState[event.target.id] = event.target.value;
@@ -21166,7 +21121,6 @@
 
 		// When a user submits... 
 		handleClick: function handleClick() {
-
 			// Set the parent to have the search term
 			this.props.setTerm(this.state.topic);
 		},
@@ -21179,17 +21133,30 @@
 				{ className: "searchForm" },
 				React.createElement(
 					"form",
-					{ className: "input-field col s12" },
+					{ id: "searching" },
 					React.createElement(
-						"label",
-						{ htmlFor: "search" },
-						"Search by Topic"
+						"div",
+						{ className: "input-field col s12" },
+						React.createElement("input", { id: "topic", type: "text", className: "validate", onChange: this.handleChange }),
+						React.createElement(
+							"label",
+							{ htmlFor: "topic" },
+							"Search by Topic"
+						),
+						React.createElement(
+							"i",
+							{ className: "material-icons" },
+							"search"
+						)
 					),
-					React.createElement("input", { id: "search", type: "search", className: "validate", onChange: this.handleChange }),
 					React.createElement(
-						"i",
-						{ className: "material-icons" },
-						"search"
+						"div",
+						{ className: "row center-align" },
+						React.createElement(
+							"button",
+							{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.handleClick, style: { backgroundColor: '#0081af' } },
+							"Search"
+						)
 					)
 				)
 			);
@@ -21381,50 +21348,59 @@
 	// Helper Functions
 	var helpers = {
 
-					runQuery: function runQuery(query) {
+		runQuery: function runQuery(query) {
 
-									console.log("is runQuery hitting?");
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&q=" + query;
 
-									var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&q=" + query;
+			return axios.get(queryURL).then(function (data) {
 
-									return axios.get(queryURL).then(function (data) {
+				var nextPageToken = data.nextPageToken;
+				var prevPageToken = data.prevPageToken;
 
-													var nextPageToken = data.nextPageToken;
-													var prevPageToken = data.prevPageToken;
+				console.log(data.data);
 
-													console.log(data);
+				var videoInfo = data.data.items;
 
-													$.each(data.items);
+				console.log(videoInfo);
 
-													// var newResults = [];
-													// var fullResults = response.data.response.docs;
-													// var counter = 0;
+				var results = [];
 
-													// for(var i = 0; i < fullResults.length; i++){
+				for (var i = 0; i < videoInfo.length; i++) {
+					var videoURL = "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1";
 
-													// 	if(counter > 4) {
-													// 		return newResults;
-													// 	}
+					results.push(videoURL);
+				}
 
-													// 	if(fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
-													// 		newResults.push(fullResults[counter]);
-													// 		counter++;
-													// 	}
-													// }
+				// $.each(data.items, function(i, item) {
+				// 	var output = getOutput(item);
 
-													// return newResults;
-									});
-					},
 
-					// This function posts saved articles to our database.
-					postArticle: function postArticle(title, date, url) {
+				// });
+				console.log("this is results: " + results);
+				return results;
+			});
+		},
 
-									axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
+		// getOutput: function(item){
+		// 	var videoId = item.id.videoId;
+		// 	var title = item.snippet.title;
+		// 	var description = item.snippet.description;
+		// 	var thumb = item.snippet.thumbnails.high.url;
+		// 	var channelTitle = item.snippet.channelTitle;
+		// 	var videoDate = item.snippet.publishedAt;
 
-													console.log("Posted to MongoDB");
-													return results;
-									});
-					}
+		// },
+
+
+		// This function posts saved videos to our database.
+		postVideo: function postVideo(title, date, url) {
+
+			axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
+
+				console.log("Posted to MongoDB");
+				return results;
+			});
+		}
 
 	};
 

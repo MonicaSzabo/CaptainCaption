@@ -9,9 +9,7 @@ var helpers = {
 
 	runQuery: function(query){
 
-		console.log("is runQuery hitting?");
-
-		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&q=" + query;
+		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&q=" + query;
 
 		return axios.get(queryURL)
 			.then(function(data){
@@ -19,34 +17,45 @@ var helpers = {
 				var nextPageToken = data.nextPageToken;
 				var prevPageToken = data.prevPageToken;
 
-				console.log(data);
+				console.log(data.data);
 
-				$.each(data.items);
+				var videoInfo = data.data.items;
 
-				// var newResults = [];
-				// var fullResults = response.data.response.docs;
-				// var counter = 0;
+				console.log(videoInfo);
 
-				// for(var i = 0; i < fullResults.length; i++){
+				var results = [];
 
-				// 	if(counter > 4) {
-				// 		return newResults;
-				// 	}
+				for(var i = 0; i < videoInfo.length; i++){
+					var videoURL = "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1"
 
-				// 	if(fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
-				// 		newResults.push(fullResults[counter]);
-				// 		counter++;
-				// 	}
-				// }
+					results.push(videoURL);
+				}
 
-				// return newResults;
+
+				// $.each(data.items, function(i, item) {
+				// 	var output = getOutput(item);
+
+
+				// });
+				console.log("this is results: " + results);
+				return results;
 		})
 
 	},
 
+	// getOutput: function(item){
+	// 	var videoId = item.id.videoId;
+	// 	var title = item.snippet.title;
+	// 	var description = item.snippet.description;
+	// 	var thumb = item.snippet.thumbnails.high.url;
+	// 	var channelTitle = item.snippet.channelTitle;
+	// 	var videoDate = item.snippet.publishedAt;
 
-	// This function posts saved articles to our database.
-	postArticle: function(title, date, url){
+	// },
+
+
+	// This function posts saved videos to our database.
+	postVideo: function(title, date, url){
 
 		axios.post('/api/saved', {title: title, date: date, url: url})
 		.then(function(results){

@@ -12,5 +12,13 @@
       }, 900);
     });
 
+    $('#searching').on('keyup keypress', function(e) {
+      var keyCode = e.keyCode || e.which;
+      if (keyCode === 13) { 
+        e.preventDefault();
+        return false;
+      }
+    });
+
   }); // end of document ready
 })(jQuery); // end of jQuery name space

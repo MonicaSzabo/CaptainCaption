@@ -18,43 +18,42 @@ var Main = React.createClass({
 	// Here we set a generic state associated with the number of clicks
 	getInitialState: function(){
 		return {
-			topic: "",
-			results: [],
-			savedArticles: []
+			topic: "puppies",
+			results: ["https://www.youtube.com/embed/1GJqfyzfCWU?cc_load_policy=1", "https://www.youtube.com/embed/0JboM-STb4E?cc_load_policy=1", "https://www.youtube.com/embed/5wdgrEGE50Q?cc_load_policy=1", "https://www.youtube.com/embed/ZCVa_ngrZBY?cc_load_policy=1", "https://www.youtube.com/embed/aQUPkOfSGq8?cc_load_policy=1", "https://www.youtube.com/embed/U8L0NlstyhU?cc_load_policy=1"],
+			savedVideos: []
 		}
 	},	
 
 	// We use this function to allow children to update the parent with searchTerms.
 	setTerm: function(topic){
-		console.log("is this hitting?");
 		this.setState({
 			topic: topic,
-		})
+		});
 	},
 
-	saveArticle: function(title, date, url){
-		helpers.postArticle(title, date, url);
-		this.getArticle();
+	saveVideo: function(title, date, url){
+		helpers.postVideo(title, date, url);
+		this.getVideo();
 	},
 
-	deleteArticle: function(article){
-		console.log(article);
-		axios.delete('/api/saved/' + article._id)
+	deleteVideo: function(video){
+		console.log(video);
+		axios.delete('/api/saved/' + video._id)
 			.then(function(response){
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 				return response;
 			}.bind(this));
 
-		this.getArticle();
+		this.getVideo();
 	},
 
-	getArticle: function(){
+	getVideo: function(){
 		axios.get('/api/saved')
 			.then(function(response){
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 			}.bind(this));
 	},
@@ -67,7 +66,6 @@ var Main = React.createClass({
 
 			helpers.runQuery(this.state.topic)
 				.then(function(data){
-					console.log(data);
 					if (data != this.state.results)
 					{
 						this.setState({
@@ -82,7 +80,7 @@ var Main = React.createClass({
 		axios.get('/api/saved')
 			.then(function(response){
 				this.setState({
-					savedArticles: response.data
+					savedVideos: response.data
 				});
 			}.bind(this));
 	},
@@ -100,30 +98,17 @@ var Main = React.createClass({
 				</div>
 
 			    <div className="row center-align">
-			      <h4>Search Results for something</h4>
+			      <h4>Results for "{this.state.topic}"</h4>
 			      <br />
 			    </div>
-			    <div className="row center-align">
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
+			    <div className="row center-align" style={{width: 900}}>
+			    {this.state.results.map(function(url, index){
+			    	return <div className="video" style={{margin: 20}, {display: 'inline-block'}}><iframe width="250" src={url} id={index} frameBorder="0" allowFullScreen></iframe></div>
+			    })}
 			    </div>
-			    <br />
-			    <div className="row center-align">
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
-			      <div className="col s12 m4 valign"><img src="assets/images/filler.jpg" style={{width:250}}/></div>
-			    </div>
-			    <br />
-			    <div className="row center-align">
-			      <div className="col s12 m4"></div>
-			      <div className="col s12 m4">
-			        <a className="waves-effect waves-light btn" style={{backgroundColor:'#0081af'}}>Load More</a>
-			      </div>
-			      <div className="col s12 m4"></div>
-			    </div>
-
 			  </div>
+
+
 		)
 	}
 });

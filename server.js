@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
-var Article = require('./models/Article.js');
+var Video = require('./models/Video.js');
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -19,7 +19,6 @@ app.use(express.static('./public'));
 
 mongoose.connect('mongodb://localhost/captaincaption');
 //mongoose.connect('mongodb://heroku_jns4phwt:61tt9c1oiotedcl5ndjhfv9pn5@ds019936.mlab.com:19936/heroku_jns4phwt');
-
 
 var db = mongoose.connection;
 
@@ -37,7 +36,7 @@ app.get('/', function(req, res){
 
 app.get('/api/saved', function(req, res) {
 
-  Article.find({})
+  Video.find({})
     .exec(function(err, doc){
 
       if(err){
@@ -51,13 +50,13 @@ app.get('/api/saved', function(req, res) {
 
 app.post('/api/saved', function(req, res){
 
-  var newArticle = new Article({
+  var newVideo = new Video({
     title: req.body.title,
     date: req.body.date,
     url: req.body.url
   });
 
-  newArticle.save(function(err, doc){
+  newVideo.save(function(err, doc){
     if(err){
       console.log(err);
       res.send(err);
@@ -70,7 +69,7 @@ app.post('/api/saved', function(req, res){
 
 app.delete('/api/saved/:id', function(req, res){
 
-  Article.find({'_id': req.params.id}).remove()
+  Video.find({'_id': req.params.id}).remove()
     .exec(function(err, doc) {
       res.send(doc);
   });
