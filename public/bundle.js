@@ -19803,6 +19803,8 @@
 					thumbnail: "https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
 					title: "Jana Adopts a Kitten",
 					url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1" }],
+				nextPageToken: null,
+				prevPageToken: null,
 				savedVideos: []
 			};
 		},
@@ -19840,9 +19842,21 @@
 		},
 
 		nextPage: function nextPage() {
-			helpers.nextPage(this.state.topic).then(function (data) {
+			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
 				this.setState({
-					results: data
+					results: data[0],
+					nextPageToken: data[1],
+					prevPageToken: data[2]
+				});
+			}.bind(this));
+		},
+
+		prevPage: function prevPage() {
+			helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken).then(function (data) {
+				this.setState({
+					results: data[0],
+					nextPageToken: data[1],
+					prevPageToken: data[2]
 				});
 			}.bind(this));
 		},
@@ -19854,9 +19868,13 @@
 				console.log("UPDATED");
 
 				helpers.runQuery(this.state.topic).then(function (data) {
+					console.log("this is data: ");
+					console.log(data);
 					if (data != this.state.results) {
 						this.setState({
-							results: data
+							results: data[0],
+							nextPageToken: data[1],
+							prevPageToken: data[2]
 						});
 					}
 				}.bind(this));
@@ -19968,11 +19986,16 @@
 				React.createElement(
 					'div',
 					{ className: 'row center-align' },
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.prevPage, style: { backgroundColor: '#0081af' } },
+						'Previous Page'
+					),
 					React.createElement('br', null),
 					React.createElement(
 						'button',
 						{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.nextPage, style: { backgroundColor: '#0081af' } },
-						'Load More'
+						'Next Page'
 					)
 				)
 			);
@@ -21478,23 +21501,13 @@
 					results.push(videoObj);
 				}
 
-				console.log("this is results: ");
-				console.log(results);
 				return [results, nextPageToken, prevPageToken];
 			});
 		},
 
-		nextPage: function nextPage(result) {
+		runQueryWithToken: function runQueryWithToken(query, token) {
 
-			var query = result[0].query;
-			var nextPageToken = result[0].nextPageToken;
-			var prevPageToken = result[0].prevPageToken;
-
-			console.log(query);
-			console.log(nextPageToken);
-			console.log(prevPageToken);
-
-			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=CBkQAA&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=" + token + "&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 			return axios.get(queryURL).then(function (data) {
 
@@ -21510,28 +21523,18 @@
 						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
 						'title': videoInfo[i].snippet.title,
 						'description': videoInfo[i].snippet.description,
-						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
+						'nextPageToken': nextPageToken,
+						'prevPageToken': prevPageToken,
+						'query': query
 					};
 
 					results.push(videoObj);
 				}
 
-				console.log("this is results: ");
-				console.log(results);
-				return results;
+				return [results, nextPageToken, prevPageToken];
 			});
 		},
-
-		// getOutput: function(item){
-		// 	var videoId = item.id.videoId;
-		// 	var title = item.snippet.title;
-		// 	var description = item.snippet.description;
-		// 	var thumb = item.snippet.thumbnails.high.url;
-		// 	var channelTitle = item.snippet.channelTitle;
-		// 	var videoDate = item.snippet.publishedAt;
-
-		// },
-
 
 		// This function posts saved videos to our database.
 		postVideo: function postVideo(title, date, url) {

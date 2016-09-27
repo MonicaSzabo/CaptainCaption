@@ -49,6 +49,8 @@ var Main = React.createClass({
 				thumbnail:"https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
 				title:"Jana Adopts a Kitten",
 				url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1"}],
+			nextPageToken: null,
+			prevPageToken: null,
 			savedVideos: []
 		}
 	},	
@@ -88,10 +90,23 @@ var Main = React.createClass({
 	},
 
 	nextPage: function() {
-		helpers.nextPage(this.state.topic)
+		helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
 		.then(function(data){
 			this.setState({
-				results: data
+				results: data[0],
+				nextPageToken: data[1],
+				prevPageToken: data[2]
+			})
+		}.bind(this))
+	},
+
+	prevPage: function() {
+		helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken)
+		.then(function(data){
+			this.setState({
+				results: data[0],
+				nextPageToken: data[1],
+				prevPageToken: data[2]
 			})
 		}.bind(this))
 	},
@@ -104,10 +119,14 @@ var Main = React.createClass({
 
 			helpers.runQuery(this.state.topic)
 				.then(function(data){
+					console.log("this is data: ");
+					console.log(data);
 					if (data != this.state.results)
 					{
 						this.setState({
-							results: data
+							results: data[0],
+							nextPageToken: data[1],
+							prevPageToken: data[2]
 						})
 					}
 				}.bind(this))
@@ -172,8 +191,9 @@ var Main = React.createClass({
 			    })}
 			    </div>
 			    <div className="row center-align">
+			    	<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.prevPage} style={{backgroundColor:'#0081af'}}>Previous Page</button>
 			    	<br />
-					<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Load More</button>
+					<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Next Page</button>
 
 				</div>
 			  </div>
