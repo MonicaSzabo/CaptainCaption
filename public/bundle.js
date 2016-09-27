@@ -19803,7 +19803,7 @@
 					thumbnail: "https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
 					title: "Jana Adopts a Kitten",
 					url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1" }],
-				nextPageToken: null,
+				nextPageToken: 'CAYQAA',
 				prevPageToken: null,
 				savedVideos: []
 			};
@@ -19842,23 +19842,31 @@
 		},
 
 		nextPage: function nextPage() {
-			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
-				this.setState({
-					results: data[0],
-					nextPageToken: data[1],
-					prevPageToken: data[2]
-				});
-			}.bind(this));
+			if (!this.state.nextPageToken) {
+				Materialize.toast("You're at the end!", 4000);
+			} else if (this.state.nextPageToken) {
+				helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
+					this.setState({
+						results: data[0],
+						nextPageToken: data[1],
+						prevPageToken: data[2]
+					});
+				}.bind(this));
+			}
 		},
 
 		prevPage: function prevPage() {
-			helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken).then(function (data) {
-				this.setState({
-					results: data[0],
-					nextPageToken: data[1],
-					prevPageToken: data[2]
-				});
-			}.bind(this));
+			if (!this.state.prevPageToken) {
+				Materialize.toast("You're at the beginning!", 4000);
+			} else if (this.state.prevPageToken) {
+				helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken).then(function (data) {
+					this.setState({
+						results: data[0],
+						nextPageToken: data[1],
+						prevPageToken: data[2]
+					});
+				}.bind(this));
+			}
 		},
 
 		// If the component updates we'll run this code
@@ -19917,10 +19925,10 @@
 					this.state.results.map(function (data, index) {
 						return React.createElement(
 							'div',
-							null,
+							{ className: 'main' },
 							React.createElement(
 								'div',
-								{ className: 'col s12 m4 l4' },
+								{ className: 'col s4 m4 l4' },
 								React.createElement(
 									'div',
 									{ className: 'card', id: index },
@@ -19987,15 +19995,22 @@
 					'div',
 					{ className: 'row center-align' },
 					React.createElement(
-						'button',
-						{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.prevPage, style: { backgroundColor: '#0081af' } },
-						'Previous Page'
+						'div',
+						{ className: 'col s12 m6 l6' },
+						React.createElement(
+							'button',
+							{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.prevPage, style: { backgroundColor: '#0081af' } },
+							'Previous'
+						)
 					),
-					React.createElement('br', null),
 					React.createElement(
-						'button',
-						{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.nextPage, style: { backgroundColor: '#0081af' } },
-						'Next Page'
+						'div',
+						{ className: 'col s12 m6 l6' },
+						React.createElement(
+							'button',
+							{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.nextPage, style: { backgroundColor: '#0081af' } },
+							'Next'
+						)
 					)
 				)
 			);

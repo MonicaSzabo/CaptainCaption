@@ -49,7 +49,7 @@ var Main = React.createClass({
 				thumbnail:"https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
 				title:"Jana Adopts a Kitten",
 				url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1"}],
-			nextPageToken: null,
+			nextPageToken: 'CAYQAA',
 			prevPageToken: null,
 			savedVideos: []
 		}
@@ -90,25 +90,36 @@ var Main = React.createClass({
 	},
 
 	nextPage: function() {
-		helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
-		.then(function(data){
-			this.setState({
-				results: data[0],
-				nextPageToken: data[1],
-				prevPageToken: data[2]
-			})
-		}.bind(this))
+		if(!this.state.nextPageToken) {
+			Materialize.toast("You're at the end!", 4000);
+		}
+		else if(this.state.nextPageToken) {
+			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
+			.then(function(data){
+				this.setState({
+					results: data[0],
+					nextPageToken: data[1],
+					prevPageToken: data[2]
+				})
+			}.bind(this))
+		}
 	},
 
 	prevPage: function() {
-		helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken)
-		.then(function(data){
-			this.setState({
-				results: data[0],
-				nextPageToken: data[1],
-				prevPageToken: data[2]
-			})
-		}.bind(this))
+		if(!this.state.prevPageToken) {
+			Materialize.toast("You're at the beginning!", 4000);
+		}
+		else if(this.state.prevPageToken) {
+			helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken)
+			.then(function(data){
+				this.setState({
+					results: data[0],
+					nextPageToken: data[1],
+					prevPageToken: data[2]
+				})
+			}.bind(this))
+		}
+		
 	},
 
 	// If the component updates we'll run this code
@@ -160,8 +171,8 @@ var Main = React.createClass({
 			    </div>
 			    <div className="row center-align" style={{width: 900}}>
 			    {this.state.results.map(function(data, index){
-			    	return  <div>
-			    			<div className="col s12 m4 l4">
+			    	return  <div className="main">
+			    			<div className="col s4 m4 l4">
 			    			<div className="card" id={index}>
 			    				<div className="card-image">
 			    					<a className="modal-trigger" href={"#watchvideo"+index}><img src={data.thumbnail} alt="Video Thumbnail"/>
@@ -191,10 +202,12 @@ var Main = React.createClass({
 			    })}
 			    </div>
 			    <div className="row center-align">
-			    	<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.prevPage} style={{backgroundColor:'#0081af'}}>Previous Page</button>
-			    	<br />
-					<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Next Page</button>
-
+					<div className="col s12 m6 l6">
+				    	<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.prevPage} style={{backgroundColor:'#0081af'}}>Previous</button>
+				    </div>
+				    <div className="col s12 m6 l6">
+						<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Next</button>
+					</div>
 				</div>
 			  </div>
 		)
