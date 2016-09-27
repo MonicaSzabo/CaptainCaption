@@ -102,13 +102,30 @@
 
   <!-- Email Me Modal -->
   <div id="emailMe" class="modal">
+    <form id="sendEmail">
     <div class="modal-content">
       <h4>Send me an Email!</h4>
-      <p>A bunch of text</p>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="name" type="text" class="validate" required>
+          <label for="name">Your Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="email" type="email" class="validate" required>
+          <label for="email">Your Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="comments" class="materialize-textarea" required></textarea>
+          <label for="comments">Your Comments</label>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      <button type="button" class="modal-action modal-close btn btn-primary waves-effect waves-light" onClick="" style="background-color:#0081af">Submit</button>
     </div>
+    </form>
   </div>
 
   <!-- Login Modal -->

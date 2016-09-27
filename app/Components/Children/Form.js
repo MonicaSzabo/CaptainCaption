@@ -32,9 +32,9 @@ var Form = React.createClass({
 			<div className="searchForm">
 				<form id="searching">
 					<div className="input-field col s12">
+						<i className="material-icons prefix">search</i>
 						<input id="topic" type="text" className="validate" onChange= {this.handleChange}/>
 						<label htmlFor="topic">Search by Topic</label>
-					    <i className="material-icons">search</i>
 					</div>
 					<div className="row center-align">
 						<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.handleClick} style={{backgroundColor:'#0081af'}}>Search</button>

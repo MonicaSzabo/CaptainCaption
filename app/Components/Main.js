@@ -7,6 +7,7 @@ var React = require('react');
 var Form = require('./Children/Form');
 var Results = require('./Children/Results');
 var Saved = require('./Children/Saved');
+var LoadMore = require('./Children/LoadMore');
 
 // Helper Function
 var helpers = require('./utils/helpers.js');
@@ -201,14 +202,9 @@ var Main = React.createClass({
 							</div>
 			    })}
 			    </div>
-			    <div className="row center-align">
-					<div className="col s12 m6 l6">
-				    	<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.prevPage} style={{backgroundColor:'#0081af'}}>Previous</button>
-				    </div>
-				    <div className="col s12 m6 l6">
-						<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Next</button>
-					</div>
-				</div>
+
+			    <LoadMore prevPage={this.prevPage} nextPage={this.nextPage} />
+
 			  </div>
 		)
 	}

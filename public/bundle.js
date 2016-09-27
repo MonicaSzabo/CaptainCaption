@@ -19765,9 +19765,10 @@
 	var Form = __webpack_require__(179);
 	var Results = __webpack_require__(180);
 	var Saved = __webpack_require__(181);
+	var LoadMore = __webpack_require__(182);
 
 	// Helper Function
-	var helpers = __webpack_require__(182);
+	var helpers = __webpack_require__(183);
 
 	// This is the main component. 
 	var Main = React.createClass({
@@ -19991,28 +19992,7 @@
 						);
 					})
 				),
-				React.createElement(
-					'div',
-					{ className: 'row center-align' },
-					React.createElement(
-						'div',
-						{ className: 'col s12 m6 l6' },
-						React.createElement(
-							'button',
-							{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.prevPage, style: { backgroundColor: '#0081af' } },
-							'Previous'
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'col s12 m6 l6' },
-						React.createElement(
-							'button',
-							{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.nextPage, style: { backgroundColor: '#0081af' } },
-							'Next'
-						)
-					)
-				)
+				React.createElement(LoadMore, { prevPage: this.prevPage, nextPage: this.nextPage })
 			);
 		}
 	});
@@ -21278,16 +21258,16 @@
 					React.createElement(
 						"div",
 						{ className: "input-field col s12" },
+						React.createElement(
+							"i",
+							{ className: "material-icons prefix" },
+							"search"
+						),
 						React.createElement("input", { id: "topic", type: "text", className: "validate", onChange: this.handleChange }),
 						React.createElement(
 							"label",
 							{ htmlFor: "topic" },
 							"Search by Topic"
-						),
-						React.createElement(
-							"i",
-							{ className: "material-icons" },
-							"search"
 						)
 					),
 					React.createElement(
@@ -21476,6 +21456,57 @@
 
 /***/ },
 /* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	// Include React 
+	var React = __webpack_require__(1);
+
+	// Component creation
+	var LoadMore = React.createClass({
+		displayName: "LoadMore",
+
+
+		getInitialState: function getInitialState() {
+			return {
+				topic: ""
+			};
+		},
+
+		// Here we render the function
+		render: function render() {
+
+			return React.createElement(
+				"div",
+				{ className: "row center-align" },
+				React.createElement(
+					"div",
+					{ className: "col s12 m6 l6" },
+					React.createElement(
+						"button",
+						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.prevPage, style: { backgroundColor: '#0081af' } },
+						"Previous Page"
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col s12 m6 l6" },
+					React.createElement(
+						"button",
+						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.nextPage, style: { backgroundColor: '#0081af' } },
+						"Next Page"
+					)
+				)
+			);
+		}
+	});
+
+	// Export the component back for use in other files
+	module.exports = LoadMore;
+
+/***/ },
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
