@@ -4,6 +4,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 
 var Video = require('./models/Video.js');
+var Message = require('./models/Message.js');
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -66,6 +67,26 @@ app.post('/api/saved', function(req, res){
   });
 
 });
+
+app.post('/api/message/saved', function(req, res){
+
+  var newMessage = new Message({
+    name: req.body.name,
+    email: req.body.email,
+    comments: req.body.comments
+  });
+
+  newMessage.save(function(err, doc){
+    if(err){
+      console.log(err);
+      res.send(err);
+    } else {
+      res.json(doc);
+    }
+  });
+
+});
+
 
 app.delete('/api/saved/:id', function(req, res){
 

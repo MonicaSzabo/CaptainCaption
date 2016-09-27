@@ -21468,12 +21468,6 @@
 		displayName: "LoadMore",
 
 
-		getInitialState: function getInitialState() {
-			return {
-				topic: ""
-			};
-		},
-
 		// Here we render the function
 		render: function render() {
 
@@ -21486,7 +21480,7 @@
 					React.createElement(
 						"button",
 						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.prevPage, style: { backgroundColor: '#0081af' } },
-						"Previous Page"
+						"Previous"
 					)
 				),
 				React.createElement(
@@ -21495,7 +21489,7 @@
 					React.createElement(
 						"button",
 						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.nextPage, style: { backgroundColor: '#0081af' } },
-						"Next Page"
+						"Next"
 					)
 				)
 			);

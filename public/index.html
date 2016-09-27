@@ -123,20 +123,26 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="modal-action modal-close btn btn-primary waves-effect waves-light" onClick="" style="background-color:#0081af">Submit</button>
+      <button type="button" class="modal-action btn btn-primary waves-effect waves-light" style="background-color:#0081af" id="submitEmailButton">Submit</button>
     </div>
     </form>
   </div>
 
   <!-- Login Modal -->
   <div id="login" class="modal">
+    <form id="loginForm">
     <div class="modal-content">
       <h4>Login</h4>
+      <div class="row">
+        <div class="input-field col s4">
+          <input id="name" type="text" class="validate" required>
+          <label for="name">Your Name</label>
+        </div>
       <p>A bunch of text</p>
       <p class="text-center">Not a member? Sign Up!</p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-light btn-flat">Submit</a>
     </div>
   </div>
 
