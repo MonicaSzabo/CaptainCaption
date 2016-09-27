@@ -19777,8 +19777,32 @@
 		// Here we set a generic state associated with the number of clicks
 		getInitialState: function getInitialState() {
 			return {
-				topic: "puppies",
-				results: ["https://www.youtube.com/embed/1GJqfyzfCWU?cc_load_policy=1", "https://www.youtube.com/embed/0JboM-STb4E?cc_load_policy=1", "https://www.youtube.com/embed/5wdgrEGE50Q?cc_load_policy=1", "https://www.youtube.com/embed/ZCVa_ngrZBY?cc_load_policy=1", "https://www.youtube.com/embed/aQUPkOfSGq8?cc_load_policy=1", "https://www.youtube.com/embed/U8L0NlstyhU?cc_load_policy=1"],
+				topic: "kitten",
+				results: [{
+					description: "On a cold Thanksgiving morning, Branden Bingham and his family stumbled upon a seemingly frozen kitten buried in the snow. In an attempt to save his life, ...",
+					thumbnail: "https://i.ytimg.com/vi/rCnRqZw4WiE/hqdefault.jpg",
+					title: "GoPro Awards: Frozen Kitten Lives",
+					url: "https://www.youtube.com/embed/rCnRqZw4WiE?cc_load_policy=1" }, {
+					description: "If you bite the mic then we can't use this audio”. Check out more awesome videos at BuzzFeedVideo! http://bit.ly/YTbuzzfeedvideo MUSIC Hop Skip And A Jump ...",
+					thumbnail: "https://i.ytimg.com/vi/yH2FPSupO6c/hqdefault.jpg",
+					title: "Cat Lovers Get Surprised By A Box Of Kittens",
+					url: "https://www.youtube.com/embed/yH2FPSupO6c?cc_load_policy=1" }, {
+					description: "The secret to stress relief? Tiny kittens! We invited strangers to step inside our big glass 'therapy' office and surprised them with kitten playtime. Click to tweet: ...",
+					thumbnail: "https://i.ytimg.com/vi/35T8wtmTbVg/hqdefault.jpg",
+					title: "Kitten Therapy: The Prescription for Stress",
+					url: "https://www.youtube.com/embed/35T8wtmTbVg?cc_load_policy=1" }, {
+					description: "Click to Tweet! http://bit.ly/ACKittyRT FB! http://on.fb.me/1uMpxKC SUBSCRIBE for more videos ▻ http://bit.ly/IWantMORE Assassin's Kittens - the fluffy hazard of ...",
+					thumbnail: "https://i.ytimg.com/vi/jnk15Wf6xMU/hqdefault.jpg",
+					title: "Assassin's Kittens!",
+					url: "https://www.youtube.com/embed/jnk15Wf6xMU?cc_load_policy=1" }, {
+					description: "Share: http://bit.ly/sharejedi This Jedi Cat has got the Force! Thanks to Aaron for working on the video with me: http://www.youtube.com/thevfxbro Andrew wrote ...",
+					thumbnail: "https://i.ytimg.com/vi/IwT7BHztBIU/hqdefault.jpg",
+					title: "Jedi Kitten - The Force Awakens",
+					url: "https://www.youtube.com/embed/IwT7BHztBIU?cc_load_policy=1" }, {
+					description: "Jana Adopts a Kitten.",
+					thumbnail: "https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
+					title: "Jana Adopts a Kitten",
+					url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1" }],
 				savedVideos: []
 			};
 		},
@@ -19811,6 +19835,14 @@
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
 					savedVideos: response.data
+				});
+			}.bind(this));
+		},
+
+		nextPage: function nextPage() {
+			helpers.nextPage(this.state.topic).then(function (data) {
+				this.setState({
+					results: data
 				});
 			}.bind(this));
 		},
@@ -19864,13 +19896,84 @@
 				React.createElement(
 					'div',
 					{ className: 'row center-align', style: { width: 900 } },
-					this.state.results.map(function (url, index) {
+					this.state.results.map(function (data, index) {
 						return React.createElement(
 							'div',
-							{ className: 'video', style: ({ margin: 20 }, { display: 'inline-block' }) },
-							React.createElement('iframe', { width: '250', src: url, id: index, frameBorder: '0', allowFullScreen: true })
+							null,
+							React.createElement(
+								'div',
+								{ className: 'col s12 m4 l4' },
+								React.createElement(
+									'div',
+									{ className: 'card', id: index },
+									React.createElement(
+										'div',
+										{ className: 'card-image' },
+										React.createElement(
+											'a',
+											{ className: 'modal-trigger', href: "#watchvideo" + index },
+											React.createElement('img', { src: data.thumbnail, alt: 'Video Thumbnail' }),
+											React.createElement(
+												'span',
+												{ className: 'card-title left-align' },
+												data.title
+											)
+										)
+									),
+									React.createElement(
+										'div',
+										{ className: 'card-content left-align' },
+										React.createElement(
+											'p',
+											null,
+											data.description
+										)
+									),
+									React.createElement(
+										'a',
+										{ className: 'white-text modal-trigger', href: "#watchvideo" + index },
+										React.createElement(
+											'div',
+											{ className: 'card-action', style: { 'backgroundColor': '#0081af' } },
+											'WATCH VIDEO'
+										)
+									)
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'modal', id: "watchvideo" + index },
+								React.createElement(
+									'div',
+									{ className: 'modal-content' },
+									React.createElement(
+										'div',
+										{ className: 'video-container' },
+										React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', allowFullScreen: true })
+									)
+								),
+								React.createElement(
+									'div',
+									{ className: 'modal-footer' },
+									React.createElement(
+										'a',
+										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+										'Close'
+									)
+								)
+							)
 						);
 					})
+				),
+				React.createElement(
+					'div',
+					{ className: 'row center-align' },
+					React.createElement('br', null),
+					React.createElement(
+						'button',
+						{ type: 'button', className: 'btn btn-primary waves-effect waves-light btn', onClick: this.nextPage, style: { backgroundColor: '#0081af' } },
+						'Load More'
+					)
 				)
 			);
 		}
@@ -21350,33 +21453,71 @@
 
 		runQuery: function runQuery(query) {
 
-			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&q=" + query;
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 			return axios.get(queryURL).then(function (data) {
 
-				var nextPageToken = data.nextPageToken;
-				var prevPageToken = data.prevPageToken;
-
-				console.log(data.data);
+				var nextPageToken = data.data.nextPageToken;
+				var prevPageToken = data.data.prevPageToken;
 
 				var videoInfo = data.data.items;
-
-				console.log(videoInfo);
 
 				var results = [];
 
 				for (var i = 0; i < videoInfo.length; i++) {
-					var videoURL = "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1";
+					var videoObj = {
+						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
+						'title': videoInfo[i].snippet.title,
+						'description': videoInfo[i].snippet.description,
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
+						'nextPageToken': nextPageToken,
+						'prevPageToken': prevPageToken,
+						'query': query
+					};
 
-					results.push(videoURL);
+					results.push(videoObj);
 				}
 
-				// $.each(data.items, function(i, item) {
-				// 	var output = getOutput(item);
+				console.log("this is results: ");
+				console.log(results);
+				return [results, nextPageToken, prevPageToken];
+			});
+		},
 
+		nextPage: function nextPage(result) {
 
-				// });
-				console.log("this is results: " + results);
+			var query = result[0].query;
+			var nextPageToken = result[0].nextPageToken;
+			var prevPageToken = result[0].prevPageToken;
+
+			console.log(query);
+			console.log(nextPageToken);
+			console.log(prevPageToken);
+
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=CBkQAA&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+
+			return axios.get(queryURL).then(function (data) {
+
+				var nextPageToken = data.data.nextPageToken;
+				var prevPageToken = data.data.prevPageToken;
+
+				var videoInfo = data.data.items;
+
+				var results = [];
+
+				for (var i = 0; i < videoInfo.length; i++) {
+					var videoObj = {
+						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
+						'title': videoInfo[i].snippet.title,
+						'description': videoInfo[i].snippet.description,
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
+					};
+
+					results.push(videoObj);
+				}
+
+				console.log("this is results: ");
+				console.log(results);
 				return results;
 			});
 		},

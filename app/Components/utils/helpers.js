@@ -9,49 +9,77 @@ var helpers = {
 
 	runQuery: function(query){
 
-		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&q=" + query;
+		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 		return axios.get(queryURL)
 			.then(function(data){
 
-				var nextPageToken = data.nextPageToken;
-				var prevPageToken = data.prevPageToken;
-
-				console.log(data.data);
+				var nextPageToken = data.data.nextPageToken;
+				var prevPageToken = data.data.prevPageToken;
 
 				var videoInfo = data.data.items;
 
-				console.log(videoInfo);
 
 				var results = [];
 
 				for(var i = 0; i < videoInfo.length; i++){
-					var videoURL = "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1"
+					var videoObj = {
+						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
+						'title': videoInfo[i].snippet.title,
+						'description': videoInfo[i].snippet.description,
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
+						'nextPageToken': nextPageToken,
+						'prevPageToken': prevPageToken,
+						'query': query
+					}
 
-					results.push(videoURL);
+					results.push(videoObj);
 				}
 
-
-				// $.each(data.items, function(i, item) {
-				// 	var output = getOutput(item);
-
-
-				// });
-				console.log("this is results: " + results);
 				return results;
 		})
 
 	},
 
-	// getOutput: function(item){
-	// 	var videoId = item.id.videoId;
-	// 	var title = item.snippet.title;
-	// 	var description = item.snippet.description;
-	// 	var thumb = item.snippet.thumbnails.high.url;
-	// 	var channelTitle = item.snippet.channelTitle;
-	// 	var videoDate = item.snippet.publishedAt;
+	nextPage: function(result) {
 
-	// },
+		var query = result[0].query;
+		var nextPageToken = result[0].nextPageToken;
+		var prevPageToken = result[0].prevPageToken;
+
+		console.log(query);
+		console.log(nextPageToken);
+		console.log(prevPageToken);
+
+		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=CBkQAA&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+
+		return axios.get(queryURL)
+			.then(function(data){
+
+				var nextPageToken = data.data.nextPageToken;
+				var prevPageToken = data.data.prevPageToken;
+
+				var videoInfo = data.data.items;
+
+
+				var results = [];
+
+				for(var i = 0; i < videoInfo.length; i++){
+					var videoObj = {
+						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
+						'title': videoInfo[i].snippet.title,
+						'description': videoInfo[i].snippet.description,
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
+					}
+
+					results.push(videoObj);
+				}
+
+				console.log("this is results: ");
+				console.log(results);
+				return results;
+		})
+	},
 
 
 	// This function posts saved videos to our database.

@@ -111,3 +111,26 @@ a.connectLink:hover {
 /*.input-field .prefix.active {
   color: #22a7f0;
 }*/
+
+.card-title {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card .card-content {
+    height: 230px;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}

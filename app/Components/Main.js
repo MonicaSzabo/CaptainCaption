@@ -18,8 +18,37 @@ var Main = React.createClass({
 	// Here we set a generic state associated with the number of clicks
 	getInitialState: function(){
 		return {
-			topic: "puppies",
-			results: ["https://www.youtube.com/embed/1GJqfyzfCWU?cc_load_policy=1", "https://www.youtube.com/embed/0JboM-STb4E?cc_load_policy=1", "https://www.youtube.com/embed/5wdgrEGE50Q?cc_load_policy=1", "https://www.youtube.com/embed/ZCVa_ngrZBY?cc_load_policy=1", "https://www.youtube.com/embed/aQUPkOfSGq8?cc_load_policy=1", "https://www.youtube.com/embed/U8L0NlstyhU?cc_load_policy=1"],
+			topic: "kitten",
+			results: [{
+				description:"On a cold Thanksgiving morning, Branden Bingham and his family stumbled upon a seemingly frozen kitten buried in the snow. In an attempt to save his life, ...",
+				thumbnail:"https://i.ytimg.com/vi/rCnRqZw4WiE/hqdefault.jpg",
+				title:"GoPro Awards: Frozen Kitten Lives",
+				url: "https://www.youtube.com/embed/rCnRqZw4WiE?cc_load_policy=1"},
+				{
+				description:"If you bite the mic then we can't use this audio”. Check out more awesome videos at BuzzFeedVideo! http://bit.ly/YTbuzzfeedvideo MUSIC Hop Skip And A Jump ...",
+				thumbnail:"https://i.ytimg.com/vi/yH2FPSupO6c/hqdefault.jpg",
+				title:"Cat Lovers Get Surprised By A Box Of Kittens",
+				url: "https://www.youtube.com/embed/yH2FPSupO6c?cc_load_policy=1"},
+				{
+				description:"The secret to stress relief? Tiny kittens! We invited strangers to step inside our big glass 'therapy' office and surprised them with kitten playtime. Click to tweet: ...",
+				thumbnail:"https://i.ytimg.com/vi/35T8wtmTbVg/hqdefault.jpg",
+				title:"Kitten Therapy: The Prescription for Stress",
+				url: "https://www.youtube.com/embed/35T8wtmTbVg?cc_load_policy=1"},
+				{
+				description:"Click to Tweet! http://bit.ly/ACKittyRT FB! http://on.fb.me/1uMpxKC SUBSCRIBE for more videos ▻ http://bit.ly/IWantMORE Assassin's Kittens - the fluffy hazard of ...",
+				thumbnail:"https://i.ytimg.com/vi/jnk15Wf6xMU/hqdefault.jpg",
+				title:"Assassin's Kittens!",
+				url: "https://www.youtube.com/embed/jnk15Wf6xMU?cc_load_policy=1"},
+				{
+				description:"Share: http://bit.ly/sharejedi This Jedi Cat has got the Force! Thanks to Aaron for working on the video with me: http://www.youtube.com/thevfxbro Andrew wrote ...",
+				thumbnail:"https://i.ytimg.com/vi/IwT7BHztBIU/hqdefault.jpg",
+				title:"Jedi Kitten - The Force Awakens",
+				url: "https://www.youtube.com/embed/IwT7BHztBIU?cc_load_policy=1"},
+				{
+				description:"Jana Adopts a Kitten.",
+				thumbnail:"https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
+				title:"Jana Adopts a Kitten",
+				url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1"}],
 			savedVideos: []
 		}
 	},	
@@ -56,6 +85,15 @@ var Main = React.createClass({
 					savedVideos: response.data
 				});
 			}.bind(this));
+	},
+
+	nextPage: function() {
+		helpers.nextPage(this.state.topic)
+		.then(function(data){
+			this.setState({
+				results: data
+			})
+		}.bind(this))
 	},
 
 	// If the component updates we'll run this code
@@ -102,15 +140,47 @@ var Main = React.createClass({
 			      <br />
 			    </div>
 			    <div className="row center-align" style={{width: 900}}>
-			    {this.state.results.map(function(url, index){
-			    	return <div className="video" style={{margin: 20}, {display: 'inline-block'}}><iframe width="250" src={url} id={index} frameBorder="0" allowFullScreen></iframe></div>
+			    {this.state.results.map(function(data, index){
+			    	return  <div>
+			    			<div className="col s12 m4 l4">
+			    			<div className="card" id={index}>
+			    				<div className="card-image">
+			    					<a className="modal-trigger" href={"#watchvideo"+index}><img src={data.thumbnail} alt="Video Thumbnail"/>
+			    					<span className="card-title left-align">{data.title}</span></a>
+			    				</div>
+		    					<div className="card-content left-align">
+          							<p>{data.description}</p>
+        						</div>
+        						<a className="white-text modal-trigger" href={"#watchvideo"+index}><div className="card-action" style={{'backgroundColor':'#0081af'}}>
+					              WATCH VIDEO
+					            </div></a>
+			    			</div>
+			    			</div>
+
+			    			<div className="modal" id={"watchvideo"+index}>
+							    <div className="modal-content">
+							      <div className="video-container">
+			   						<iframe width="1102" height="620" src={data.url} className="responsive-video" frameBorder="0" allowFullScreen>
+			    					</iframe>
+ 			    				   </div>
+							    </div>
+							    <div className="modal-footer">
+     								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+   								</div>
+							</div>
+							</div>
 			    })}
 			    </div>
+			    <div className="row center-align">
+			    	<br />
+					<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.nextPage} style={{backgroundColor:'#0081af'}}>Load More</button>
+
+				</div>
 			  </div>
-
-
 		)
 	}
 });
 
 module.exports = Main;
+
+
