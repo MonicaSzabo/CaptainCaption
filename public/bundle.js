@@ -19778,32 +19778,32 @@
 		// Here we set a generic state associated with the number of clicks
 		getInitialState: function getInitialState() {
 			return {
-				topic: "kitten",
+				topic: "volcano",
 				results: [{
-					description: "On a cold Thanksgiving morning, Branden Bingham and his family stumbled upon a seemingly frozen kitten buried in the snow. In an attempt to save his life, ...",
-					thumbnail: "https://i.ytimg.com/vi/rCnRqZw4WiE/hqdefault.jpg",
-					title: "GoPro Awards: Frozen Kitten Lives",
-					url: "https://www.youtube.com/embed/rCnRqZw4WiE?cc_load_policy=1" }, {
-					description: "If you bite the mic then we can't use this audio”. Check out more awesome videos at BuzzFeedVideo! http://bit.ly/YTbuzzfeedvideo MUSIC Hop Skip And A Jump ...",
-					thumbnail: "https://i.ytimg.com/vi/yH2FPSupO6c/hqdefault.jpg",
-					title: "Cat Lovers Get Surprised By A Box Of Kittens",
-					url: "https://www.youtube.com/embed/yH2FPSupO6c?cc_load_policy=1" }, {
-					description: "The secret to stress relief? Tiny kittens! We invited strangers to step inside our big glass 'therapy' office and surprised them with kitten playtime. Click to tweet: ...",
-					thumbnail: "https://i.ytimg.com/vi/35T8wtmTbVg/hqdefault.jpg",
-					title: "Kitten Therapy: The Prescription for Stress",
-					url: "https://www.youtube.com/embed/35T8wtmTbVg?cc_load_policy=1" }, {
-					description: "Click to Tweet! http://bit.ly/ACKittyRT FB! http://on.fb.me/1uMpxKC SUBSCRIBE for more videos ▻ http://bit.ly/IWantMORE Assassin's Kittens - the fluffy hazard of ...",
-					thumbnail: "https://i.ytimg.com/vi/jnk15Wf6xMU/hqdefault.jpg",
-					title: "Assassin's Kittens!",
-					url: "https://www.youtube.com/embed/jnk15Wf6xMU?cc_load_policy=1" }, {
-					description: "Share: http://bit.ly/sharejedi This Jedi Cat has got the Force! Thanks to Aaron for working on the video with me: http://www.youtube.com/thevfxbro Andrew wrote ...",
-					thumbnail: "https://i.ytimg.com/vi/IwT7BHztBIU/hqdefault.jpg",
-					title: "Jedi Kitten - The Force Awakens",
-					url: "https://www.youtube.com/embed/IwT7BHztBIU?cc_load_policy=1" }, {
-					description: "Jana Adopts a Kitten.",
-					thumbnail: "https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
-					title: "Jana Adopts a Kitten",
-					url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1" }],
+					description: "Learn what a volcano is and how does it erupt with the help of your friend Dr. Binocs. Hey kids! Have you ever heard of a volcanic eruption? Do words like ...",
+					thumbnail: "https://i.ytimg.com/vi/lAmqsMQG3RM/hqdefault.jpg",
+					title: "Volcano | The Dr. Binocs Show | Learn Videos For Kids",
+					url: "https://www.youtube.com/embed/lAmqsMQG3RM?cc_load_policy=1" }, {
+					description: "Inside A Volcano: Explorer Travels To The World's Most Extreme Environments WATCH on our Barcroft TV Website: ...",
+					thumbnail: "https://i.ytimg.com/vi/w-zFVW-wEx0/hqdefault.jpg",
+					title: "Inside A Volcano: Explorer Travels To The World's Most Extreme Environments",
+					url: "https://www.youtube.com/embed/w-zFVW-wEx0?cc_load_policy=1" }, {
+					description: "A song to help teach about volcanoes- eruptions, magma, lava, and more! (lyrics below) See more of Mr. R.'s free science resources at sciencepoems.net ...",
+					thumbnail: "https://i.ytimg.com/vi/bwTkTzdkVS4/hqdefault.jpg",
+					title: "Volcano Song",
+					url: "https://www.youtube.com/embed/bwTkTzdkVS4?cc_load_policy=1" }, {
+					description: "HooplakidzLab is back with a brand new science experiment video, Volcano of Vinegar. I hope you like the new style. Join me on Facebook: ...",
+					thumbnail: "https://i.ytimg.com/vi/ghth9zAd_hQ/hqdefault.jpg",
+					title: "Vinegar Volcano Science Experiment by HooplakidzLab",
+					url: "https://www.youtube.com/embed/ghth9zAd_hQ?cc_load_policy=1" }, {
+					description: "Volcano potato recipe. Epic hollowed potato wrapped in bbq sauce coated bacon, with gooey cheese filling, sriracha topping! So good! Subscribe for regular ...",
+					thumbnail: "https://i.ytimg.com/vi/LT60qV329_E/hqdefault.jpg",
+					title: "VOLCANO POTATO",
+					url: "https://www.youtube.com/embed/LT60qV329_E?cc_load_policy=1" }, {
+					description: "One of the most dramatic landforms on the planet, volcanoes come in many different shapes and sizes. Learn how volcanoes form, what types and structures ...",
+					thumbnail: "https://i.ytimg.com/vi/V863xR0Y2qk/hqdefault.jpg",
+					title: "All About Volcanoes for Children: Introduction to Volcanoes for Kids - FreeSchool",
+					url: "https://www.youtube.com/embed/V863xR0Y2qk?cc_load_policy=1" }],
 				nextPageToken: 'CAYQAA',
 				prevPageToken: null,
 				savedVideos: []
@@ -19840,6 +19840,14 @@
 					savedVideos: response.data
 				});
 			}.bind(this));
+		},
+
+		stopVideo: function stopVideo(index) {
+			alert("yeah!");
+			// $('.close').click(function () {
+			//   $('#' + index).hide();
+			//   $('#videoModalone iframe').attr("src", jQuery("#videoModalone iframe").attr("src"));
+			// });
 		},
 
 		nextPage: function nextPage() {
@@ -19984,7 +19992,7 @@
 									{ className: 'modal-footer' },
 									React.createElement(
 										'a',
-										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+										{ href: '#', onClick: '', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
 										'Close'
 									)
 								)
@@ -21303,38 +21311,83 @@
 
 		getInitialState: function getInitialState() {
 			return {
-				title: "",
-				date: "",
-				url: "",
-				results: []
+				output: []
 			};
 		},
 
 		// When a user clicks save article
 		clickToSave: function clickToSave(result) {
 
-			this.props.saveArticle(result.headline.main, result.pub_date, result.web_url);
+			this.props.saveVideo();
 		},
 
 		componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 			var that = this;
-			var myResults = nextProps.results.map(function (search, i) {
-				var boundClick = that.clickToSave.bind(that, search);
+			var myResults = nextProps.results.map(function (data, index) {
 				return React.createElement(
 					"div",
-					{ className: "list-group-item", key: i },
+					{ className: "main" },
 					React.createElement(
-						"a",
-						{ href: search.web_url, target: "_blank" },
-						search.headline.main
+						"div",
+						{ className: "col s12 m6 l4" },
+						React.createElement(
+							"div",
+							{ className: "card hoverable" },
+							React.createElement(
+								"div",
+								{ className: "card-image" },
+								React.createElement(
+									"a",
+									{ className: "modal-trigger", href: "#watchvideo" + index },
+									React.createElement("img", { src: data.thumbnail, alt: "Video Thumbnail" }),
+									React.createElement(
+										"span",
+										{ className: "card-title left-align" },
+										data.title
+									)
+								)
+							),
+							React.createElement(
+								"div",
+								{ className: "card-content left-align" },
+								React.createElement(
+									"p",
+									null,
+									data.description
+								)
+							),
+							React.createElement(
+								"a",
+								{ className: "white-text modal-trigger", href: "#watchvideo" + index },
+								React.createElement(
+									"div",
+									{ className: "card-action", style: { 'backgroundColor': '#0081af' } },
+									"WATCH VIDEO"
+								)
+							)
+						)
 					),
-					React.createElement("br", null),
-					search.pub_date,
-					React.createElement("br", null),
 					React.createElement(
-						"button",
-						{ type: "button", className: "btn btn-warning", style: { 'float': 'right', 'marginTop': '-39px' }, onClick: boundClick },
-						"Save"
+						"div",
+						{ className: "modal", id: "watchvideo" + index },
+						React.createElement(
+							"div",
+							{ className: "modal-content" },
+							React.createElement(
+								"div",
+								{ className: "video-container" },
+								React.createElement("iframe", { width: "1102", height: "620", src: data.url, className: "responsive-video", frameBorder: "0", id: index, allowFullScreen: true })
+							)
+						),
+						React.createElement(
+							"div",
+							{ className: "modal-footer" },
+							React.createElement(
+								"a",
+								{ href: "#", onClick: "", className: "modal-action modal-close waves-effect waves-light btn-flat" },
+								"Close"
+							)
+						)
 					)
 				);
 			});
@@ -21346,25 +21399,8 @@
 		render: function render() {
 			return React.createElement(
 				"div",
-				{ className: "panel panel-warning" },
-				React.createElement(
-					"div",
-					{ className: "panel-heading" },
-					React.createElement(
-						"h3",
-						{ className: "panel-title text-center" },
-						React.createElement(
-							"strong",
-							null,
-							"Results"
-						)
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "panel-body" },
-					this.state.results
-				)
+				{ className: "row center-align" },
+				this.state.results
 			);
 		}
 	});
@@ -21532,10 +21568,7 @@
 						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
 						'title': videoInfo[i].snippet.title,
 						'description': videoInfo[i].snippet.description,
-						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
-						'nextPageToken': nextPageToken,
-						'prevPageToken': prevPageToken,
-						'query': query
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
 					};
 
 					results.push(videoObj);

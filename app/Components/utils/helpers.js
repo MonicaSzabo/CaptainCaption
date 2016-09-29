@@ -27,10 +27,7 @@ var helpers = {
 						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
 						'title': videoInfo[i].snippet.title,
 						'description': videoInfo[i].snippet.description,
-						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
-						'nextPageToken': nextPageToken,
-						'prevPageToken': prevPageToken,
-						'query': query
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
 					}
 
 					results.push(videoObj);

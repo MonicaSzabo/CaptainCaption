@@ -3,7 +3,6 @@
 
     $('.button-collapse').sideNav();
     $('.parallax').parallax();
-    $('.modal-trigger').leanModal();
 
     //Scrolls down on Learn More button in top navbar
     $(".learnMore").click(function() {
@@ -11,6 +10,19 @@
           scrollTop: $("#aboutUs").offset().top
       }, 900);
     });
+
+    //On closing a modal, the videos will stop running
+    $('.modal-trigger').leanModal({
+        complete: function() { 
+          $("#watchvideo0 iframe").attr("src", $("#watchvideo0 iframe").attr("src"));
+          $("#watchvideo1 iframe").attr("src", $("#watchvideo1 iframe").attr("src"));
+          $("#watchvideo2 iframe").attr("src", $("#watchvideo2 iframe").attr("src"));
+          $("#watchvideo3 iframe").attr("src", $("#watchvideo3 iframe").attr("src"));
+          $("#watchvideo4 iframe").attr("src", $("#watchvideo4 iframe").attr("src"));
+          $("#watchvideo5 iframe").attr("src", $("#watchvideo5 iframe").attr("src"));
+        }
+      }
+    );
 
     //Submit button on email modal, posts message to mongo
     $("#submitEmailButton").click(function() {

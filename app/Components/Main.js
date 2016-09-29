@@ -19,37 +19,37 @@ var Main = React.createClass({
 	// Here we set a generic state associated with the number of clicks
 	getInitialState: function(){
 		return {
-			topic: "kitten",
+			topic: "volcano",
 			results: [{
-				description:"On a cold Thanksgiving morning, Branden Bingham and his family stumbled upon a seemingly frozen kitten buried in the snow. In an attempt to save his life, ...",
-				thumbnail:"https://i.ytimg.com/vi/rCnRqZw4WiE/hqdefault.jpg",
-				title:"GoPro Awards: Frozen Kitten Lives",
-				url: "https://www.youtube.com/embed/rCnRqZw4WiE?cc_load_policy=1"},
+				description:"Learn what a volcano is and how does it erupt with the help of your friend Dr. Binocs. Hey kids! Have you ever heard of a volcanic eruption? Do words like ...",
+				thumbnail:"https://i.ytimg.com/vi/lAmqsMQG3RM/hqdefault.jpg",
+				title:"Volcano | The Dr. Binocs Show | Learn Videos For Kids",
+				url:"https://www.youtube.com/embed/lAmqsMQG3RM?cc_load_policy=1"},
 				{
-				description:"If you bite the mic then we can't use this audio”. Check out more awesome videos at BuzzFeedVideo! http://bit.ly/YTbuzzfeedvideo MUSIC Hop Skip And A Jump ...",
-				thumbnail:"https://i.ytimg.com/vi/yH2FPSupO6c/hqdefault.jpg",
-				title:"Cat Lovers Get Surprised By A Box Of Kittens",
-				url: "https://www.youtube.com/embed/yH2FPSupO6c?cc_load_policy=1"},
+				description:"Inside A Volcano: Explorer Travels To The World's Most Extreme Environments WATCH on our Barcroft TV Website: ...",
+				thumbnail:"https://i.ytimg.com/vi/w-zFVW-wEx0/hqdefault.jpg",
+				title:"Inside A Volcano: Explorer Travels To The World's Most Extreme Environments",
+				url:"https://www.youtube.com/embed/w-zFVW-wEx0?cc_load_policy=1"},
 				{
-				description:"The secret to stress relief? Tiny kittens! We invited strangers to step inside our big glass 'therapy' office and surprised them with kitten playtime. Click to tweet: ...",
-				thumbnail:"https://i.ytimg.com/vi/35T8wtmTbVg/hqdefault.jpg",
-				title:"Kitten Therapy: The Prescription for Stress",
-				url: "https://www.youtube.com/embed/35T8wtmTbVg?cc_load_policy=1"},
+				description:"A song to help teach about volcanoes- eruptions, magma, lava, and more! (lyrics below) See more of Mr. R.'s free science resources at sciencepoems.net ...",
+				thumbnail:"https://i.ytimg.com/vi/bwTkTzdkVS4/hqdefault.jpg",
+				title:"Volcano Song",
+				url:"https://www.youtube.com/embed/bwTkTzdkVS4?cc_load_policy=1"},
 				{
-				description:"Click to Tweet! http://bit.ly/ACKittyRT FB! http://on.fb.me/1uMpxKC SUBSCRIBE for more videos ▻ http://bit.ly/IWantMORE Assassin's Kittens - the fluffy hazard of ...",
-				thumbnail:"https://i.ytimg.com/vi/jnk15Wf6xMU/hqdefault.jpg",
-				title:"Assassin's Kittens!",
-				url: "https://www.youtube.com/embed/jnk15Wf6xMU?cc_load_policy=1"},
+				description:"HooplakidzLab is back with a brand new science experiment video, Volcano of Vinegar. I hope you like the new style. Join me on Facebook: ...",
+				thumbnail:"https://i.ytimg.com/vi/ghth9zAd_hQ/hqdefault.jpg",
+				title:"Vinegar Volcano Science Experiment by HooplakidzLab",
+				url:"https://www.youtube.com/embed/ghth9zAd_hQ?cc_load_policy=1"},
 				{
-				description:"Share: http://bit.ly/sharejedi This Jedi Cat has got the Force! Thanks to Aaron for working on the video with me: http://www.youtube.com/thevfxbro Andrew wrote ...",
-				thumbnail:"https://i.ytimg.com/vi/IwT7BHztBIU/hqdefault.jpg",
-				title:"Jedi Kitten - The Force Awakens",
-				url: "https://www.youtube.com/embed/IwT7BHztBIU?cc_load_policy=1"},
+				description:"Volcano potato recipe. Epic hollowed potato wrapped in bbq sauce coated bacon, with gooey cheese filling, sriracha topping! So good! Subscribe for regular ...",
+				thumbnail:"https://i.ytimg.com/vi/LT60qV329_E/hqdefault.jpg",
+				title:"VOLCANO POTATO",
+				url:"https://www.youtube.com/embed/LT60qV329_E?cc_load_policy=1"},
 				{
-				description:"Jana Adopts a Kitten.",
-				thumbnail:"https://i.ytimg.com/vi/0AspToApy88/hqdefault.jpg",
-				title:"Jana Adopts a Kitten",
-				url: "https://www.youtube.com/embed/0AspToApy88?cc_load_policy=1"}],
+				description:"One of the most dramatic landforms on the planet, volcanoes come in many different shapes and sizes. Learn how volcanoes form, what types and structures ...",
+				thumbnail:"https://i.ytimg.com/vi/V863xR0Y2qk/hqdefault.jpg",
+				title:"All About Volcanoes for Children: Introduction to Volcanoes for Kids - FreeSchool",
+				url:"https://www.youtube.com/embed/V863xR0Y2qk?cc_load_policy=1"}],
 			nextPageToken: 'CAYQAA',
 			prevPageToken: null,
 			savedVideos: []
@@ -88,6 +88,14 @@ var Main = React.createClass({
 					savedVideos: response.data
 				});
 			}.bind(this));
+	},
+
+	stopVideo: function(index){
+		alert("yeah!");
+		// $('.close').click(function () {
+		//   $('#' + index).hide();
+		//   $('#videoModalone iframe').attr("src", jQuery("#videoModalone iframe").attr("src"));
+		// });
 	},
 
 	nextPage: function() {
@@ -196,7 +204,7 @@ var Main = React.createClass({
  			    				   </div>
 							    </div>
 							    <div className="modal-footer">
-     								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+     								<a href="#" onClick="" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
    								</div>
 							</div>
 							</div>
