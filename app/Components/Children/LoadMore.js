@@ -9,10 +9,10 @@ var LoadMore = React.createClass({
 
 		return(
 			<div className="row center-align">
-				<div className="col s12 m6 l6">
+				<div className="col s6 m6 l6">
 			    	<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.props.prevPage} style={{backgroundColor:'#0081af'}}>Previous</button>
 			    </div>
-			    <div className="col s12 m6 l6">
+			    <div className="col s6 m6 l6">
 					<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.props.nextPage} style={{backgroundColor:'#0081af'}}>Next</button>
 				</div>
 			</div>

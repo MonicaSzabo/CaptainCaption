@@ -19922,17 +19922,17 @@
 				),
 				React.createElement(
 					'div',
-					{ className: 'row center-align', style: { width: 900 } },
+					{ className: 'row center-align' },
 					this.state.results.map(function (data, index) {
 						return React.createElement(
 							'div',
 							{ className: 'main' },
 							React.createElement(
 								'div',
-								{ className: 'col s4 m4 l4' },
+								{ className: 'col s12 m6 l4' },
 								React.createElement(
 									'div',
-									{ className: 'card', id: index },
+									{ className: 'card hoverable' },
 									React.createElement(
 										'div',
 										{ className: 'card-image' },
@@ -19976,7 +19976,7 @@
 									React.createElement(
 										'div',
 										{ className: 'video-container' },
-										React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', allowFullScreen: true })
+										React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', id: index, allowFullScreen: true })
 									)
 								),
 								React.createElement(
@@ -21476,7 +21476,7 @@
 				{ className: "row center-align" },
 				React.createElement(
 					"div",
-					{ className: "col s12 m6 l6" },
+					{ className: "col s6 m6 l6" },
 					React.createElement(
 						"button",
 						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.prevPage, style: { backgroundColor: '#0081af' } },
@@ -21485,7 +21485,7 @@
 				),
 				React.createElement(
 					"div",
-					{ className: "col s12 m6 l6" },
+					{ className: "col s6 m6 l6" },
 					React.createElement(
 						"button",
 						{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.props.nextPage, style: { backgroundColor: '#0081af' } },

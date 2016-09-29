@@ -170,11 +170,11 @@ var Main = React.createClass({
 			      <h4>Results for "{this.state.topic}"</h4>
 			      <br />
 			    </div>
-			    <div className="row center-align" style={{width: 900}}>
+			    <div className="row center-align">
 			    {this.state.results.map(function(data, index){
 			    	return  <div className="main">
-			    			<div className="col s4 m4 l4">
-			    			<div className="card" id={index}>
+			    			<div className="col s12 m6 l4">
+			    			<div className="card hoverable">
 			    				<div className="card-image">
 			    					<a className="modal-trigger" href={"#watchvideo"+index}><img src={data.thumbnail} alt="Video Thumbnail"/>
 			    					<span className="card-title left-align">{data.title}</span></a>
@@ -191,7 +191,7 @@ var Main = React.createClass({
 			    			<div className="modal" id={"watchvideo"+index}>
 							    <div className="modal-content">
 							      <div className="video-container">
-			   						<iframe width="1102" height="620" src={data.url} className="responsive-video" frameBorder="0" allowFullScreen>
+			   						<iframe width="1102" height="620" src={data.url} className="responsive-video" frameBorder="0" id={index} allowFullScreen>
 			    					</iframe>
  			    				   </div>
 							    </div>
