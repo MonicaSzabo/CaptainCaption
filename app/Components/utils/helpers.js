@@ -9,7 +9,7 @@ var helpers = {
 
 	runQuery: function(query){
 
-		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoEmbeddable=true&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 		return axios.get(queryURL)
 			.then(function(data){
@@ -41,7 +41,7 @@ var helpers = {
 
 	runQueryWithToken: function(query, token){
 
-		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=" + token + "&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+		var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=" + token + "&type=video&maxResults=6&videoEmbeddable=true&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 		return axios.get(queryURL)
 			.then(function(data){

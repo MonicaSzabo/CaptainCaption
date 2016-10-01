@@ -90,19 +90,13 @@ var Main = React.createClass({
 			}.bind(this));
 	},
 
-	stopVideo: function(index){
-		alert("yeah!");
-		// $('.close').click(function () {
-		//   $('#' + index).hide();
-		//   $('#videoModalone iframe').attr("src", jQuery("#videoModalone iframe").attr("src"));
-		// });
-	},
-
 	nextPage: function() {
 		if(!this.state.nextPageToken) {
 			Materialize.toast("You're at the end!", 4000);
 		}
 		else if(this.state.nextPageToken) {
+			// $('html, body').animate({scrollTop: $("#aboutUs").offset().top}, 900);
+
 			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
 			.then(function(data){
 				this.setState({
@@ -110,7 +104,7 @@ var Main = React.createClass({
 					nextPageToken: data[1],
 					prevPageToken: data[2]
 				})
-			}.bind(this))
+			}.bind(this))   
 		}
 	},
 
@@ -174,7 +168,7 @@ var Main = React.createClass({
 
 				</div>
 
-			    <div className="row center-align">
+			    <div className="row center-align" id="topResults">
 			      <h4>Results for "{this.state.topic}"</h4>
 			      <br />
 			    </div>
@@ -204,7 +198,7 @@ var Main = React.createClass({
  			    				   </div>
 							    </div>
 							    <div className="modal-footer">
-     								<a href="#" onClick="" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+     								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
    								</div>
 							</div>
 							</div>

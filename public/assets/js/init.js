@@ -7,9 +7,10 @@
     //Scrolls down on Learn More button in top navbar
     $(".learnMore").click(function() {
       $('html, body').animate({
-          scrollTop: $("#aboutUs").offset().top
+          scrollTop: $("#topResults").offset().top
       }, 900);
     });
+
 
     //On closing a modal, the videos will stop running
     $('.modal-trigger').leanModal({

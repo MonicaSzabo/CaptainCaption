@@ -19842,18 +19842,12 @@
 			}.bind(this));
 		},
 
-		stopVideo: function stopVideo(index) {
-			alert("yeah!");
-			// $('.close').click(function () {
-			//   $('#' + index).hide();
-			//   $('#videoModalone iframe').attr("src", jQuery("#videoModalone iframe").attr("src"));
-			// });
-		},
-
 		nextPage: function nextPage() {
 			if (!this.state.nextPageToken) {
 				Materialize.toast("You're at the end!", 4000);
 			} else if (this.state.nextPageToken) {
+				// $('html, body').animate({scrollTop: $("#aboutUs").offset().top}, 900);
+
 				helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
 					this.setState({
 						results: data[0],
@@ -19918,7 +19912,7 @@
 				),
 				React.createElement(
 					'div',
-					{ className: 'row center-align' },
+					{ className: 'row center-align', id: 'topResults' },
 					React.createElement(
 						'h4',
 						null,
@@ -19992,7 +19986,7 @@
 									{ className: 'modal-footer' },
 									React.createElement(
 										'a',
-										{ href: '#', onClick: '', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
 										'Close'
 									)
 								)
@@ -21552,7 +21546,7 @@
 
 		runQuery: function runQuery(query) {
 
-			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&type=video&maxResults=6&videoEmbeddable=true&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 			return axios.get(queryURL).then(function (data) {
 
@@ -21580,7 +21574,7 @@
 
 		runQueryWithToken: function runQueryWithToken(query, token) {
 
-			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=" + token + "&type=video&maxResults=6&videoCaption=closedCaption&safeSearch=strict&q=" + query;
+			var queryURL = "https://www.googleapis.com/youtube/v3/search?key=" + youtubeAPI + "&part=snippet,id&pageToken=" + token + "&type=video&maxResults=6&videoEmbeddable=true&videoCaption=closedCaption&safeSearch=strict&q=" + query;
 
 			return axios.get(queryURL).then(function (data) {
 
