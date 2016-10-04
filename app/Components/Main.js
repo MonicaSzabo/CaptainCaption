@@ -52,7 +52,10 @@ var Main = React.createClass({
 				url:"https://www.youtube.com/embed/V863xR0Y2qk?cc_load_policy=1"}],
 			nextPageToken: 'CAYQAA',
 			prevPageToken: null,
-			savedVideos: []
+			savedVideos: [],
+			userName: 'Anonymous, Sign In Up Top',
+			userID: null,
+			isAuthorized: false
 		}
 	},	
 
@@ -63,13 +66,16 @@ var Main = React.createClass({
 		});
 	},
 
-	saveVideo: function(title, date, url){
-		helpers.postVideo(title, date, url);
+	saveVideo: function(url, title, description, thumbnail, userID){
+		Materialize.toast("Video Saved!", 4000);
+		helpers.postVideo(url, title, description, thumbnail, userID);
 		this.getVideo();
 	},
+	// This is what needs to be sent in the "SAVE VIDEO" button
+	// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
+	// {this.state.savedVideos.map(function(data, index){})}
 
 	deleteVideo: function(video){
-		console.log(video);
 		axios.delete('/api/saved/' + video._id)
 			.then(function(response){
 				this.setState({
@@ -95,8 +101,6 @@ var Main = React.createClass({
 			Materialize.toast("You're at the end!", 4000);
 		}
 		else if(this.state.nextPageToken) {
-			// $('html, body').animate({scrollTop: $("#aboutUs").offset().top}, 900);
-
 			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
 			.then(function(data){
 				this.setState({
@@ -105,6 +109,8 @@ var Main = React.createClass({
 					prevPageToken: data[2]
 				})
 			}.bind(this))   
+
+			$('html, body').animate({scrollTop: $("#topResults").offset().top}, 3000);
 		}
 	},
 
@@ -129,12 +135,9 @@ var Main = React.createClass({
 	componentDidUpdate: function(prevProps, prevState){
 
 		if(prevState.topic != this.state.topic){
-			console.log("UPDATED");
 
 			helpers.runQuery(this.state.topic)
 				.then(function(data){
-					console.log("this is data: ");
-					console.log(data);
 					if (data != this.state.results)
 					{
 						this.setState({
@@ -148,6 +151,24 @@ var Main = React.createClass({
 	},
 
 	componentDidMount: function(){
+
+		axios.get('/authorize')
+			.then(function(data){
+				this.setState({
+					isAuthorized: data.data.isAuthorized,
+					userName: data.data.user.firstName,
+					userID: data.data.user._id
+				});
+				Materialize.toast("You are logged in!", 4000);
+			}.bind(this));
+
+		if(!this.state.isAuthorized) {
+			this.setState({
+				userName: 'Anonymous, Sign In Up Top',
+				userID: null
+			});
+		}
+
 		axios.get('/api/saved')
 			.then(function(response){
 				this.setState({
@@ -161,6 +182,11 @@ var Main = React.createClass({
 		return(
 
 			  <div className="section">
+
+			  	<div className="row center-align" id="topResults">
+			      <h4>Welcome {this.state.userName}!</h4>
+			      <br />
+			    </div>
 
 			    <div className="row">
 
@@ -184,8 +210,12 @@ var Main = React.createClass({
 		    					<div className="card-content left-align">
           							<p>{data.description}</p>
         						</div>
-        						<a className="white-text modal-trigger" href={"#watchvideo"+index}><div className="card-action" style={{'backgroundColor':'#0081af'}}>
+        						<a className="white-text modal-trigger" href={"#watchvideo"+index}><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#0081af'}}>
 					              WATCH VIDEO
+					            </div></a>
+					            <a className="white-text" href='#'><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#1b998b'}}>
+					              SAVE VIDEO
+					            }
 					            </div></a>
 			    			</div>
 			    			</div>
@@ -196,6 +226,18 @@ var Main = React.createClass({
 			   						<iframe width="1102" height="620" src={data.url} className="responsive-video" frameBorder="0" id={index} allowFullScreen>
 			    					</iframe>
  			    				   </div>
+							    </div>
+							    <div className="modal-footer">
+     								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+   								</div>
+							</div>
+
+							<div className="modal" id="savedVideos">
+							    <div className="modal-content">
+							      <h4>Saved Videos</h4>
+							      <div className="row">
+							      	This is where the saved videos will go.  If user not signed it, it will ask them to sign in.
+							      </div>
 							    </div>
 							    <div className="modal-footer">
      								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>

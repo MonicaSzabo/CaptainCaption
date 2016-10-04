@@ -130,6 +130,11 @@ a.connectLink:hover {
     overflow-y: scroll;
 }
 
+.card .card-title {
+    height: 100px;
+    overflow-y: scroll;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }

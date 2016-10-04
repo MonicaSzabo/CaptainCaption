@@ -6,7 +6,7 @@ var Saved = React.createClass({
 
 	getInitialState: function(){
 		return {
-			savedArticles: []
+			savedVideos: []
 		}
 	},
 
@@ -23,7 +23,7 @@ var Saved = React.createClass({
 			return <div className="list-group-item" key={i}><a href={search.url} target="_blank">{search.title}</a><br />{search.date}<br /><button type="button" className="btn btn-success" style={{'float': 'right', 'marginTop': '-39px'}} onClick={boundClick}>Delete</button></div>
 		});
 
-		this.setState({savedArticles: myResults});
+		this.setState({savedVideos: myResults});
 	},
 
 	// Here we render the function
@@ -33,12 +33,11 @@ var Saved = React.createClass({
 
 			<div className="panel panel-success">
 				<div className="panel-heading">
-					<h3 className="panel-title text-center"><strong>Saved Articles</strong></h3>
+					<h3 className="panel-title text-center"><strong>Saved Videos</strong></h3>
 				</div>
 				<div className="panel-body">
 
-					{/* Here we use a map function to loop through an array in JSX*/}
-					{this.state.savedArticles}
+					{this.state.savedVideos}
 				</div>
 			</div>
 
@@ -47,6 +46,4 @@ var Saved = React.createClass({
 });
 
 
-
-// Export the component back for use in other files
 module.exports = Saved;

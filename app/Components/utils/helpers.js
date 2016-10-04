@@ -60,9 +60,6 @@ var helpers = {
 						'title': videoInfo[i].snippet.title,
 						'description': videoInfo[i].snippet.description,
 						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
-						'nextPageToken': nextPageToken,
-						'prevPageToken': prevPageToken,
-						'query': query
 					}
 
 					results.push(videoObj);
@@ -75,9 +72,9 @@ var helpers = {
 
 
 	// This function posts saved videos to our database.
-	postVideo: function(title, date, url){
+	postVideo: function(url, title, description, thumbnail, userID){
 
-		axios.post('/api/saved', {title: title, date: date, url: url})
+		axios.post('/api/saved', {url: url, title: title, description: description, thumbnail: thumbnail, userID: userID})
 		.then(function(results){
 
 			console.log("Posted to MongoDB");

@@ -6,10 +6,10 @@ var mongoose = require('mongoose');
 
 var Video = require('./models/Video.js');
 var Message = require('./models/Message.js');
+var User = require('./models/User.js');
 
-// var passport = require('passport');
-// var flash = require('connect-flash');
-// var session = require('express-session');
+var passport = require('passport');
+var session = require('express-session');
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -25,12 +25,11 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static('./public'));
 
 
-// app.use(session({secret: 'idunnothisisasecret'}));
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(flash());
+app.use(session({secret: 'SKtfriC46tTaK2HbgIzsdJ0_', resave: true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// require('./app/routes.js')(app, passport);
+require('./auth/passport.js')(app, passport);
 
 mongoose.connect('mongodb://localhost/captaincaption');
 //mongoose.connect('mongodb://heroku_jns4phwt:61tt9c1oiotedcl5ndjhfv9pn5@ds019936.mlab.com:19936/heroku_jns4phwt');
@@ -46,43 +45,47 @@ db.once('open', function () {
 });
 
 
-// passport.use(new GoogleStrategy({
-//     returnURL: 'http://localhost:3000/auth/google/return',
-//     realm: 'http://localhost:3000/'
-//   },
-//   function(identifier, done) {
-//     User.findByOpenID({ openId: identifier }, function (err, user) {
-//       return done(err, user);
-//     });
-//   }
-// ));
 
-// app.get('/auth/google',
-//   passport.authenticate('google'),
-//   function(req, res){
-//     // The request will be redirected to Google for authentication, so
-//     // this function will not be called.
-//   });
-
-// app.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   });
+app.get('/auth/google',
+  passport.authenticate('google', {scope: ['profile', 'email']})
+);
 
 
+app.get('/auth/google/callback', passport.authenticate('google',
+    { successRedirect : '/',
+      failureRedirect : '/'
+}));
 
 
+app.get("/authorize", function(req, res){
+    res.header('Access-Control-Allow-Credentials', true);
+    if (req.isAuthenticated()){
+      return res.json({isAuthorized: true, user: req.user});
+    }
+    return res.json({isAuthorized: false});
+});
+
+app.get("/logout", function(req, res){
+    req.logout();
+    res.json({isAuthorized: req.isAuthenticated()});
+});
+
+function isLoggedIn(req, res, next) {
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect('/');
+}
 
 
 app.get('/', function(req, res){
   res.sendFile('./public/index.html');
 })
 
+
 app.get('/api/saved', function(req, res) {
 
-  Video.find({})
+  Video.find({'userID': req.body.userID})
     .exec(function(err, doc){
 
       if(err){
@@ -97,9 +100,11 @@ app.get('/api/saved', function(req, res) {
 app.post('/api/saved', function(req, res){
 
   var newVideo = new Video({
+    url: req.body.url,
     title: req.body.title,
-    date: req.body.date,
-    url: req.body.url
+    description: req.body.description,
+    thumbnail: req.body.thumbnail,
+    userID: req.body.userID
   });
 
   newVideo.save(function(err, doc){

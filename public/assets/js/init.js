@@ -7,7 +7,7 @@
     //Scrolls down on Learn More button in top navbar
     $(".learnMore").click(function() {
       $('html, body').animate({
-          scrollTop: $("#topResults").offset().top
+          scrollTop: $("#aboutUs").offset().top
       }, 900);
     });
 

@@ -19806,7 +19806,10 @@
 					url: "https://www.youtube.com/embed/V863xR0Y2qk?cc_load_policy=1" }],
 				nextPageToken: 'CAYQAA',
 				prevPageToken: null,
-				savedVideos: []
+				savedVideos: [],
+				userName: 'Anonymous, Sign In Up Top',
+				userID: null,
+				isAuthorized: false
 			};
 		},
 
@@ -19817,13 +19820,16 @@
 			});
 		},
 
-		saveVideo: function saveVideo(title, date, url) {
-			helpers.postVideo(title, date, url);
+		saveVideo: function saveVideo(url, title, description, thumbnail, userID) {
+			Materialize.toast("Video Saved!", 4000);
+			helpers.postVideo(url, title, description, thumbnail, userID);
 			this.getVideo();
 		},
+		// This is what needs to be sent in the "SAVE VIDEO" button
+		// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
+		// {this.state.savedVideos.map(function(data, index){})}
 
 		deleteVideo: function deleteVideo(video) {
-			console.log(video);
 			axios.delete('/api/saved/' + video._id).then(function (response) {
 				this.setState({
 					savedVideos: response.data
@@ -19846,8 +19852,6 @@
 			if (!this.state.nextPageToken) {
 				Materialize.toast("You're at the end!", 4000);
 			} else if (this.state.nextPageToken) {
-				// $('html, body').animate({scrollTop: $("#aboutUs").offset().top}, 900);
-
 				helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
 					this.setState({
 						results: data[0],
@@ -19855,6 +19859,8 @@
 						prevPageToken: data[2]
 					});
 				}.bind(this));
+
+				$('html, body').animate({ scrollTop: $("#topResults").offset().top }, 3000);
 			}
 		},
 
@@ -19876,11 +19882,8 @@
 		componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 
 			if (prevState.topic != this.state.topic) {
-				console.log("UPDATED");
 
 				helpers.runQuery(this.state.topic).then(function (data) {
-					console.log("this is data: ");
-					console.log(data);
 					if (data != this.state.results) {
 						this.setState({
 							results: data[0],
@@ -19893,6 +19896,23 @@
 		},
 
 		componentDidMount: function componentDidMount() {
+
+			axios.get('/authorize').then(function (data) {
+				this.setState({
+					isAuthorized: data.data.isAuthorized,
+					userName: data.data.user.firstName,
+					userID: data.data.user._id
+				});
+				Materialize.toast("You are logged in!", 4000);
+			}.bind(this));
+
+			if (!this.state.isAuthorized) {
+				this.setState({
+					userName: 'Anonymous, Sign In Up Top',
+					userID: null
+				});
+			}
+
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
 					savedVideos: response.data
@@ -19905,6 +19925,18 @@
 			return React.createElement(
 				'div',
 				{ className: 'section' },
+				React.createElement(
+					'div',
+					{ className: 'row center-align', id: 'topResults' },
+					React.createElement(
+						'h4',
+						null,
+						'Welcome ',
+						this.state.userName,
+						'!'
+					),
+					React.createElement('br', null)
+				),
 				React.createElement(
 					'div',
 					{ className: 'row' },
@@ -19963,8 +19995,17 @@
 										{ className: 'white-text modal-trigger', href: "#watchvideo" + index },
 										React.createElement(
 											'div',
-											{ className: 'card-action', style: { 'backgroundColor': '#0081af' } },
+											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#0081af' } },
 											'WATCH VIDEO'
+										)
+									),
+									React.createElement(
+										'a',
+										{ className: 'white-text', href: '#' },
+										React.createElement(
+											'div',
+											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b' } },
+											'SAVE VIDEO }'
 										)
 									)
 								)
@@ -19979,6 +20020,33 @@
 										'div',
 										{ className: 'video-container' },
 										React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', id: index, allowFullScreen: true })
+									)
+								),
+								React.createElement(
+									'div',
+									{ className: 'modal-footer' },
+									React.createElement(
+										'a',
+										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+										'Close'
+									)
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'modal', id: 'savedVideos' },
+								React.createElement(
+									'div',
+									{ className: 'modal-content' },
+									React.createElement(
+										'h4',
+										null,
+										'Saved Videos'
+									),
+									React.createElement(
+										'div',
+										{ className: 'row' },
+										'This is where the saved videos will go.  If user not signed it, it will ask them to sign in.'
 									)
 								),
 								React.createElement(
@@ -21418,7 +21486,7 @@
 
 		getInitialState: function getInitialState() {
 			return {
-				savedArticles: []
+				savedVideos: []
 			};
 		},
 
@@ -21450,7 +21518,7 @@
 				);
 			});
 
-			this.setState({ savedArticles: myResults });
+			this.setState({ savedVideos: myResults });
 		},
 
 		// Here we render the function
@@ -21468,20 +21536,19 @@
 						React.createElement(
 							"strong",
 							null,
-							"Saved Articles"
+							"Saved Videos"
 						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "panel-body" },
-					this.state.savedArticles
+					this.state.savedVideos
 				)
 			);
 		}
 	});
 
-	// Export the component back for use in other files
 	module.exports = Saved;
 
 /***/ },
@@ -21590,10 +21657,7 @@
 						'url': "https://www.youtube.com/embed/" + videoInfo[i].id.videoId + "?cc_load_policy=1",
 						'title': videoInfo[i].snippet.title,
 						'description': videoInfo[i].snippet.description,
-						'thumbnail': videoInfo[i].snippet.thumbnails.high.url,
-						'nextPageToken': nextPageToken,
-						'prevPageToken': prevPageToken,
-						'query': query
+						'thumbnail': videoInfo[i].snippet.thumbnails.high.url
 					};
 
 					results.push(videoObj);
@@ -21604,9 +21668,9 @@
 		},
 
 		// This function posts saved videos to our database.
-		postVideo: function postVideo(title, date, url) {
+		postVideo: function postVideo(url, title, description, thumbnail, userID) {
 
-			axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
+			axios.post('/api/saved', { url: url, title: title, description: description, thumbnail: thumbnail, userID: userID }).then(function (results) {
 
 				console.log("Posted to MongoDB");
 				return results;
