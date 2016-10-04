@@ -20005,7 +20005,7 @@
 										React.createElement(
 											'div',
 											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b' } },
-											'SAVE VIDEO }'
+											'SAVE VIDEO'
 										)
 									)
 								)
