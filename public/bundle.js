@@ -19827,7 +19827,6 @@
 		},
 		// This is what needs to be sent in the "SAVE VIDEO" button
 		// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
-		// {this.state.savedVideos.map(function(data, index){})}
 
 		deleteVideo: function deleteVideo(video) {
 			axios.delete('/api/saved/' + video._id).then(function (response) {
@@ -19927,7 +19926,7 @@
 				{ className: 'section' },
 				React.createElement(
 					'div',
-					{ className: 'row center-align', id: 'topResults' },
+					{ className: 'row center-align' },
 					React.createElement(
 						'h4',
 						null,
@@ -20031,38 +20030,49 @@
 										'Close'
 									)
 								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'modal', id: 'savedVideos' },
-								React.createElement(
-									'div',
-									{ className: 'modal-content' },
-									React.createElement(
-										'h4',
-										null,
-										'Saved Videos'
-									),
-									React.createElement(
-										'div',
-										{ className: 'row' },
-										'This is where the saved videos will go.  If user not signed it, it will ask them to sign in.'
-									)
-								),
-								React.createElement(
-									'div',
-									{ className: 'modal-footer' },
-									React.createElement(
-										'a',
-										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
-										'Close'
-									)
-								)
 							)
 						);
 					})
 				),
-				React.createElement(LoadMore, { prevPage: this.prevPage, nextPage: this.nextPage })
+				React.createElement(LoadMore, { prevPage: this.prevPage, nextPage: this.nextPage }),
+				React.createElement(
+					'div',
+					{ className: 'main row center-align' },
+					React.createElement(
+						'div',
+						{ className: 'modal', id: 'savedVideos' },
+						React.createElement(
+							'div',
+							{ className: 'modal-content center-align' },
+							React.createElement(
+								'h4',
+								null,
+								'Saved Videos'
+							),
+							React.createElement(
+								'div',
+								{ className: 'row' },
+								'This is where the saved videos will go.  If user not signed it, it will ask them to sign in.',
+								this.state.savedVideos.map(function (data, index) {
+									return React.createElement(
+										'div',
+										{ id: 'vid' },
+										data
+									);
+								})
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'modal-footer' },
+							React.createElement(
+								'a',
+								{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+								'Close'
+							)
+						)
+					)
+				)
 			);
 		}
 	});

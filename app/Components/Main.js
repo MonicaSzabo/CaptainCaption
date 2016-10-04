@@ -73,7 +73,6 @@ var Main = React.createClass({
 	},
 	// This is what needs to be sent in the "SAVE VIDEO" button
 	// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
-	// {this.state.savedVideos.map(function(data, index){})}
 
 	deleteVideo: function(video){
 		axios.delete('/api/saved/' + video._id)
@@ -183,7 +182,7 @@ var Main = React.createClass({
 
 			  <div className="section">
 
-			  	<div className="row center-align" id="topResults">
+			  	<div className="row center-align">
 			      <h4>Welcome {this.state.userName}!</h4>
 			      <br />
 			    </div>
@@ -230,23 +229,26 @@ var Main = React.createClass({
      								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
    								</div>
 							</div>
-
-							<div className="modal" id="savedVideos">
-							    <div className="modal-content">
-							      <h4>Saved Videos</h4>
-							      <div className="row">
-							      	This is where the saved videos will go.  If user not signed it, it will ask them to sign in.
-							      </div>
-							    </div>
-							    <div className="modal-footer">
-     								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
-   								</div>
-							</div>
 							</div>
 			    })}
 			    </div>
 
 			    <LoadMore prevPage={this.prevPage} nextPage={this.nextPage} />
+
+			    <div className="main row center-align">
+			    <div className="modal" id="savedVideos">
+				    <div className="modal-content center-align">
+				      <h4>Saved Videos</h4>
+				      <div className="row">
+				      	This is where the saved videos will go.  If user not signed it, it will ask them to sign in.
+				      	{this.state.savedVideos.map(function(data, index){return <div id="vid">{data}</div>})}
+				      </div>
+				    </div>
+				    <div className="modal-footer">
+						<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+					</div>
+				</div>
+				</div>
 
 			  </div>
 		)
