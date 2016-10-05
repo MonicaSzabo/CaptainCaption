@@ -19821,12 +19821,14 @@
 		},
 
 		saveVideo: function saveVideo(url, title, description, thumbnail, userID) {
-			Materialize.toast("Video Saved!", 4000);
-			helpers.postVideo(url, title, description, thumbnail, userID);
-			this.getVideo();
+			if (this.state.isAuthorized) {
+				Materialize.toast("Video Saved!", 4000);
+				helpers.postVideo(url, title, description, thumbnail, userID);
+				this.getVideo();
+			} else {
+				Materialize.toast("Please Log In First!", 4000);
+			}
 		},
-		// This is what needs to be sent in the "SAVE VIDEO" button
-		// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
 
 		deleteVideo: function deleteVideo(video) {
 			axios.delete('/api/saved/' + video._id).then(function (response) {
@@ -19840,7 +19842,8 @@
 		},
 
 		getVideo: function getVideo() {
-			axios.get('/api/saved').then(function (response) {
+			axios.get('/api/saved/' + this.state.userID).then(function (response) {
+				console.log("response", response);
 				this.setState({
 					savedVideos: response.data
 				});
@@ -19897,30 +19900,35 @@
 		componentDidMount: function componentDidMount() {
 
 			axios.get('/authorize').then(function (data) {
-				this.setState({
-					isAuthorized: data.data.isAuthorized,
-					userName: data.data.user.firstName,
-					userID: data.data.user._id
-				});
-				Materialize.toast("You are logged in!", 4000);
+
+				if (this.state.isAuthorized) {
+					this.setState({
+						isAuthorized: data.data.isAuthorized,
+						userName: data.data.user.firstName,
+						userID: data.data.user._id
+					});
+					Materialize.toast("You are logged in!", 4000);
+					this.getVideo();
+				} else {
+					this.setState({
+						userName: 'Anonymous, Sign In Up Top',
+						userID: null
+					});
+				}
 			}.bind(this));
 
-			if (!this.state.isAuthorized) {
-				this.setState({
-					userName: 'Anonymous, Sign In Up Top',
-					userID: null
-				});
-			}
-
-			axios.get('/api/saved').then(function (response) {
-				this.setState({
-					savedVideos: response.data
-				});
-			}.bind(this));
+			// axios.get('/api/saved')
+			// 	.then(function(response){
+			// 		this.setState({
+			// 			savedVideos: response.data
+			// 		});
+			// 	}.bind(this));
 		},
 
 		// Here we render the function
 		render: function render() {
+			var _this = this;
+
 			return React.createElement(
 				'div',
 				{ className: 'section' },
@@ -19959,7 +19967,7 @@
 					this.state.results.map(function (data, index) {
 						return React.createElement(
 							'div',
-							{ className: 'main' },
+							{ key: "results" + index, className: 'main' },
 							React.createElement(
 								'div',
 								{ className: 'col s12 m6 l4' },
@@ -20000,10 +20008,12 @@
 									),
 									React.createElement(
 										'a',
-										{ className: 'white-text', href: '#' },
+										{ className: 'white-text', onClick: function onClick() {
+												_this.saveVideo(data.url, data.title, data.description, data.thumbnail, _this.state.userID);
+											} },
 										React.createElement(
 											'div',
-											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b' } },
+											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b', 'cursor': 'pointer' } },
 											'SAVE VIDEO'
 										)
 									)
@@ -20052,12 +20062,43 @@
 							React.createElement(
 								'div',
 								{ className: 'row' },
-								'This is where the saved videos will go.  If user not signed it, it will ask them to sign in.',
 								this.state.savedVideos.map(function (data, index) {
 									return React.createElement(
 										'div',
-										{ id: 'vid' },
-										data
+										{ key: "vid" + index, id: 'vid' },
+										React.createElement(
+											'div',
+											{ className: 'col s12 m6 l4' },
+											React.createElement(
+												'div',
+												{ className: 'card hoverable' },
+												React.createElement(
+													'div',
+													{ className: 'card-image' },
+													React.createElement(
+														'a',
+														{ className: 'modal-trigger', href: data.url, target: '_blank' },
+														React.createElement('img', { src: data.thumbnail, alt: 'Video Thumbnail' }),
+														React.createElement(
+															'span',
+															{ className: 'card-title left-align' },
+															data.title
+														)
+													)
+												),
+												React.createElement(
+													'a',
+													{ className: 'white-text modal-trigger', onClick: function onClick() {
+															_this.deleteVideo(data);
+														} },
+													React.createElement(
+														'div',
+														{ className: 'card-action', style: { 'backgroundColor': '#0081af', 'cursor': 'pointer' } },
+														'REMOVE VIDEO'
+													)
+												)
+											)
+										)
 									);
 								})
 							)

@@ -25,7 +25,8 @@ var VideoSchema = new Schema({
   	required: "Thumbnail is Required"
   },
   userID: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     trim: true,
     required: "UserID is Required"
   }

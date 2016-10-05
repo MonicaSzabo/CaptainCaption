@@ -67,12 +67,14 @@ var Main = React.createClass({
 	},
 
 	saveVideo: function(url, title, description, thumbnail, userID){
-		Materialize.toast("Video Saved!", 4000);
-		helpers.postVideo(url, title, description, thumbnail, userID);
-		this.getVideo();
+		if(this.state.isAuthorized){
+			Materialize.toast("Video Saved!", 4000);
+			helpers.postVideo(url, title, description, thumbnail, userID);
+			this.getVideo();
+		} else {
+			Materialize.toast("Please Log In First!", 4000);
+		}
 	},
-	// This is what needs to be sent in the "SAVE VIDEO" button
-	// {this.saveVideo({data.url}, {data.title}, {data.description}, {data.thumbnail}, {this.state.userID})}
 
 	deleteVideo: function(video){
 		axios.delete('/api/saved/' + video._id)
@@ -87,8 +89,9 @@ var Main = React.createClass({
 	},
 
 	getVideo: function(){
-		axios.get('/api/saved')
+		axios.get('/api/saved/'+this.state.userID)
 			.then(function(response){
+				console.log("response", response)
 				this.setState({
 					savedVideos: response.data
 				});
@@ -153,27 +156,30 @@ var Main = React.createClass({
 
 		axios.get('/authorize')
 			.then(function(data){
-				this.setState({
-					isAuthorized: data.data.isAuthorized,
-					userName: data.data.user.firstName,
-					userID: data.data.user._id
-				});
-				Materialize.toast("You are logged in!", 4000);
+
+				if(this.state.isAuthorized){
+					this.setState({
+						isAuthorized: data.data.isAuthorized,
+						userName: data.data.user.firstName,
+						userID: data.data.user._id
+					});
+					Materialize.toast("You are logged in!", 4000);
+					this.getVideo();
+				} else {
+					this.setState({
+						userName: 'Anonymous, Sign In Up Top',
+						userID: null
+					});
+				}
 			}.bind(this));
 
-		if(!this.state.isAuthorized) {
-			this.setState({
-				userName: 'Anonymous, Sign In Up Top',
-				userID: null
-			});
-		}
 
-		axios.get('/api/saved')
-			.then(function(response){
-				this.setState({
-					savedVideos: response.data
-				});
-			}.bind(this));
+		// axios.get('/api/saved')
+		// 	.then(function(response){
+		// 		this.setState({
+		// 			savedVideos: response.data
+		// 		});
+		// 	}.bind(this));
 	},
 
 	// Here we render the function
@@ -198,8 +204,8 @@ var Main = React.createClass({
 			      <br />
 			    </div>
 			    <div className="row center-align">
-			    {this.state.results.map(function(data, index){
-			    	return  <div className="main">
+			    {this.state.results.map((data, index) =>{
+			    	return  <div  key={"results"+index} className="main">
 			    			<div className="col s12 m6 l4">
 			    			<div className="card hoverable">
 			    				<div className="card-image">
@@ -212,7 +218,7 @@ var Main = React.createClass({
         						<a className="white-text modal-trigger" href={"#watchvideo"+index}><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#0081af'}}>
 					              WATCH VIDEO
 					            </div></a>
-					            <a className="white-text" href='#'><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#1b998b'}}>
+					            <a className="white-text" onClick={()=>{this.saveVideo(data.url, data.title, data.description, data.thumbnail, this.state.userID)}}><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#1b998b', 'cursor':'pointer'}}>
 					              SAVE VIDEO
 					            </div></a>
 			    			</div>
@@ -240,8 +246,19 @@ var Main = React.createClass({
 				    <div className="modal-content center-align">
 				      <h4>Saved Videos</h4>
 				      <div className="row">
-				      	This is where the saved videos will go.  If user not signed it, it will ask them to sign in.
-				      	{this.state.savedVideos.map(function(data, index){return <div id="vid">{data}</div>})}
+				      	{this.state.savedVideos.map((data, index) =>{return <div key={"vid"+index} id="vid">
+				      		<div className="col s12 m6 l4">
+			    			<div className="card hoverable">
+			    				<div className="card-image">
+			    					<a className="modal-trigger" href={data.url} target="_blank"><img src={data.thumbnail} alt="Video Thumbnail"/>
+			    					<span className="card-title left-align">{data.title}</span></a>
+			    				</div>
+		    					<a className="white-text modal-trigger" onClick={()=>{this.deleteVideo(data)}}><div className="card-action" style={{'backgroundColor':'#0081af', 'cursor':'pointer'}}>
+					              REMOVE VIDEO
+					            </div></a>
+			    			</div>
+			    			</div>
+			    		</div>})}
 				      </div>
 				    </div>
 				    <div className="modal-footer">

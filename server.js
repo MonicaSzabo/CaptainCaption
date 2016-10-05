@@ -83,10 +83,9 @@ app.get('/', function(req, res){
 })
 
 
-app.get('/api/saved', function(req, res) {
+app.get('/api/saved/:id', function(req, res) {
 
-  Video.find({'userID': req.body.userID})
-    .exec(function(err, doc){
+  Video.find({'userID': req.params.id}).populate("user").exec(function(err, doc){
 
       if(err){
         console.log(err);
