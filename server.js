@@ -67,7 +67,7 @@ app.get("/authorize", function(req, res){
 
 app.get("/logout", function(req, res){
     req.logout();
-    res.json({isAuthorized: req.isAuthenticated()});
+    res.redirect('/');
 });
 
 function isLoggedIn(req, res, next) {

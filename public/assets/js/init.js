@@ -11,6 +11,11 @@
       }, 900);
     });
 
+    //Click bottom logo, goes to top of the page
+    $("#bottomCapLogo").click(function() {
+      window.scrollTo(0, 0);
+    });
+
 
     //On closing a modal, the videos will stop running
     $('.modal-trigger').leanModal({

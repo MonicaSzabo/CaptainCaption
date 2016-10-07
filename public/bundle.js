@@ -19763,8 +19763,7 @@
 
 	// Here we include all of the sub-components
 	var Form = __webpack_require__(179);
-	var Results = __webpack_require__(180);
-	var Saved = __webpack_require__(181);
+	var NavBar = __webpack_require__(181);
 	var LoadMore = __webpack_require__(182);
 
 	// Helper Function
@@ -19807,9 +19806,10 @@
 				nextPageToken: 'CAYQAA',
 				prevPageToken: null,
 				savedVideos: [],
-				userName: 'Anonymous, Sign In Up Top',
+				userName: 'Guest',
 				userID: null,
-				isAuthorized: false
+				isAuthorized: false,
+				pageNumber: 1
 			};
 		},
 
@@ -19854,6 +19854,8 @@
 			if (!this.state.nextPageToken) {
 				Materialize.toast("You're at the end!", 4000);
 			} else if (this.state.nextPageToken) {
+				var page = this.state.pageNumber + 1;
+				this.setState({ pageNumber: page });
 				helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken).then(function (data) {
 					this.setState({
 						results: data[0],
@@ -19862,7 +19864,7 @@
 					});
 				}.bind(this));
 
-				$('html, body').animate({ scrollTop: $("#topResults").offset().top }, 3000);
+				window.scrollTo(0, 0);
 			}
 		},
 
@@ -19870,6 +19872,8 @@
 			if (!this.state.prevPageToken) {
 				Materialize.toast("You're at the beginning!", 4000);
 			} else if (this.state.prevPageToken) {
+				var page = this.state.pageNumber - 1;
+				this.setState({ pageNumber: page });
 				helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken).then(function (data) {
 					this.setState({
 						results: data[0],
@@ -19877,21 +19881,28 @@
 						prevPageToken: data[2]
 					});
 				}.bind(this));
+
+				window.scrollTo(0, 0);
 			}
 		},
 
 		// If the component updates we'll run this code
 		componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 
-			if (prevState.topic != this.state.topic) {
+			if (prevState.topic != this.state.topic && this.state.topic) {
 
 				helpers.runQuery(this.state.topic).then(function (data) {
 					if (data != this.state.results) {
 						this.setState({
+							pageNumber: 1,
 							results: data[0],
 							nextPageToken: data[1],
 							prevPageToken: data[2]
 						});
+
+						if (data[0].length == 0) {
+							Materialize.toast("No results!", 4000);
+						}
 					}
 				}.bind(this));
 			}
@@ -19900,8 +19911,8 @@
 		componentDidMount: function componentDidMount() {
 
 			axios.get('/authorize').then(function (data) {
-
-				if (this.state.isAuthorized) {
+				console.log("fromauthorize", data);
+				if (data.data.isAuthorized) {
 					this.setState({
 						isAuthorized: data.data.isAuthorized,
 						userName: data.data.user.firstName,
@@ -19911,18 +19922,11 @@
 					this.getVideo();
 				} else {
 					this.setState({
-						userName: 'Anonymous, Sign In Up Top',
+						userName: 'Guest',
 						userID: null
 					});
 				}
 			}.bind(this));
-
-			// axios.get('/api/saved')
-			// 	.then(function(response){
-			// 		this.setState({
-			// 			savedVideos: response.data
-			// 		});
-			// 	}.bind(this));
 		},
 
 		// Here we render the function
@@ -19931,120 +19935,149 @@
 
 			return React.createElement(
 				'div',
-				{ className: 'section' },
+				null,
+				React.createElement(NavBar, { isAuthorized: this.state.isAuthorized }),
 				React.createElement(
 					'div',
-					{ className: 'row center-align' },
+					{ className: 'container' },
 					React.createElement(
-						'h4',
-						null,
-						'Welcome ',
-						this.state.userName,
-						'!'
-					),
-					React.createElement('br', null)
-				),
-				React.createElement(
-					'div',
-					{ className: 'row' },
-					React.createElement(Form, { setTerm: this.setTerm })
-				),
-				React.createElement(
-					'div',
-					{ className: 'row center-align', id: 'topResults' },
-					React.createElement(
-						'h4',
-						null,
-						'Results for "',
-						this.state.topic,
-						'"'
-					),
-					React.createElement('br', null)
-				),
-				React.createElement(
-					'div',
-					{ className: 'row center-align' },
-					this.state.results.map(function (data, index) {
-						return React.createElement(
-							'div',
-							{ key: "results" + index, className: 'main' },
+						'div',
+						{ className: 'row center-align' },
+						React.createElement(
+							'h4',
+							null,
+							'Welcome ',
+							this.state.userName,
+							'! View ',
 							React.createElement(
+								'a',
+								{ className: 'modal-trigger', href: '#savedVideos' },
+								'Saved Videos'
+							),
+							'?'
+						),
+						React.createElement('br', null)
+					),
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(Form, { setTerm: this.setTerm })
+					),
+					React.createElement(
+						'div',
+						{ className: 'row center-align', id: 'topResults' },
+						React.createElement(
+							'h4',
+							null,
+							'Results for "',
+							this.state.topic,
+							'"'
+						),
+						React.createElement(
+							'p',
+							null,
+							'Page Number: ',
+							this.state.pageNumber
+						),
+						React.createElement('br', null)
+					),
+					React.createElement(
+						'div',
+						{ className: 'row center-align' },
+						this.state.results.map(function (data, index) {
+							return React.createElement(
 								'div',
-								{ className: 'col s12 m6 l4' },
+								{ key: "results" + index, className: 'main' },
 								React.createElement(
 									'div',
-									{ className: 'card hoverable' },
+									{ className: 'col s12 m6 l4' },
 									React.createElement(
 										'div',
-										{ className: 'card-image' },
+										{ className: 'card hoverable' },
+										React.createElement(
+											'div',
+											{ className: 'card-image' },
+											React.createElement(
+												'a',
+												{ className: 'modal-trigger', href: "#watchvideo" + index },
+												React.createElement('img', { src: data.thumbnail, alt: 'Video Thumbnail' }),
+												React.createElement(
+													'span',
+													{ className: 'card-title left-align' },
+													data.title
+												)
+											)
+										),
+										React.createElement(
+											'div',
+											{ className: 'card-content left-align' },
+											React.createElement(
+												'p',
+												{ style: { 'lineHeight': '24px' } },
+												data.description
+											)
+										),
 										React.createElement(
 											'a',
-											{ className: 'modal-trigger', href: "#watchvideo" + index },
-											React.createElement('img', { src: data.thumbnail, alt: 'Video Thumbnail' }),
+											{ className: 'white-text modal-trigger', href: "#watchvideo" + index },
 											React.createElement(
-												'span',
-												{ className: 'card-title left-align' },
-												data.title
+												'div',
+												{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#0081af' } },
+												'WATCH VIDEO'
+											)
+										),
+										React.createElement(
+											'a',
+											{ className: 'white-text', onClick: function onClick() {
+													_this.saveVideo(data.url, data.title, data.description, data.thumbnail, _this.state.userID);
+												} },
+											React.createElement(
+												'div',
+												{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b', 'cursor': 'pointer' } },
+												'SAVE VIDEO'
 											)
 										)
-									),
-									React.createElement(
-										'div',
-										{ className: 'card-content left-align' },
-										React.createElement(
-											'p',
-											null,
-											data.description
-										)
-									),
-									React.createElement(
-										'a',
-										{ className: 'white-text modal-trigger', href: "#watchvideo" + index },
-										React.createElement(
-											'div',
-											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#0081af' } },
-											'WATCH VIDEO'
-										)
-									),
-									React.createElement(
-										'a',
-										{ className: 'white-text', onClick: function onClick() {
-												_this.saveVideo(data.url, data.title, data.description, data.thumbnail, _this.state.userID);
-											} },
-										React.createElement(
-											'div',
-											{ className: 'card-action col s6 m6 l6', style: { 'backgroundColor': '#1b998b', 'cursor': 'pointer' } },
-											'SAVE VIDEO'
-										)
-									)
-								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'modal', id: "watchvideo" + index },
-								React.createElement(
-									'div',
-									{ className: 'modal-content' },
-									React.createElement(
-										'div',
-										{ className: 'video-container' },
-										React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', id: index, allowFullScreen: true })
 									)
 								),
 								React.createElement(
 									'div',
-									{ className: 'modal-footer' },
+									{ className: 'modal', id: "watchvideo" + index },
 									React.createElement(
-										'a',
-										{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
-										'Close'
+										'div',
+										{ className: 'modal-content' },
+										React.createElement(
+											'div',
+											{ className: 'video-container' },
+											React.createElement('iframe', { width: '1102', height: '620', src: data.url, className: 'responsive-video', frameBorder: '0', id: index, allowFullScreen: true })
+										)
+									),
+									React.createElement(
+										'div',
+										{ className: 'card-action white-text waves-effect waves-light btn-flat', style: { 'backgroundColor': '#1b998b', 'cursor': 'pointer' } },
+										React.createElement(
+											'a',
+											{ className: 'white-text', onClick: function onClick() {
+													_this.saveVideo(data.url, data.title, data.description, data.thumbnail, _this.state.userID);
+												} },
+											'SAVE VIDEO'
+										)
+									),
+									React.createElement('br', null),
+									React.createElement(
+										'div',
+										{ className: 'modal-content' },
+										React.createElement(
+											'a',
+											{ href: '#', className: 'modal-action modal-close waves-effect waves-light btn-flat' },
+											'Close'
+										)
 									)
 								)
-							)
-						);
-					})
+							);
+						})
+					),
+					React.createElement(LoadMore, { prevPage: this.prevPage, nextPage: this.nextPage })
 				),
-				React.createElement(LoadMore, { prevPage: this.prevPage, nextPage: this.nextPage }),
 				React.createElement(
 					'div',
 					{ className: 'main row center-align' },
@@ -20060,9 +20093,14 @@
 								'Saved Videos'
 							),
 							React.createElement(
+								'p',
+								null,
+								'Click the video picture to play it in a new window!'
+							),
+							React.createElement(
 								'div',
 								{ className: 'row' },
-								this.state.savedVideos.map(function (data, index) {
+								this.state.savedVideos.length > 0 ? this.state.savedVideos.map(function (data, index) {
 									return React.createElement(
 										'div',
 										{ key: "vid" + index, id: 'vid' },
@@ -20071,7 +20109,7 @@
 											{ className: 'col s12 m6 l4' },
 											React.createElement(
 												'div',
-												{ className: 'card hoverable' },
+												{ className: 'card' },
 												React.createElement(
 													'div',
 													{ className: 'card-image' },
@@ -20100,7 +20138,11 @@
 											)
 										)
 									);
-								})
+								}) : React.createElement(
+									'div',
+									{ id: 'noVideos' },
+									'You do not have any videos currently saved'
+								)
 							)
 						),
 						React.createElement(
@@ -21409,119 +21451,7 @@
 	module.exports = Form;
 
 /***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	// Include React 
-	var React = __webpack_require__(1);
-
-	// Component creation
-	var Results = React.createClass({
-		displayName: "Results",
-
-
-		getInitialState: function getInitialState() {
-			return {
-				output: []
-			};
-		},
-
-		// When a user clicks save article
-		clickToSave: function clickToSave(result) {
-
-			this.props.saveVideo();
-		},
-
-		componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-			var that = this;
-			var myResults = nextProps.results.map(function (data, index) {
-				return React.createElement(
-					"div",
-					{ className: "main" },
-					React.createElement(
-						"div",
-						{ className: "col s12 m6 l4" },
-						React.createElement(
-							"div",
-							{ className: "card hoverable" },
-							React.createElement(
-								"div",
-								{ className: "card-image" },
-								React.createElement(
-									"a",
-									{ className: "modal-trigger", href: "#watchvideo" + index },
-									React.createElement("img", { src: data.thumbnail, alt: "Video Thumbnail" }),
-									React.createElement(
-										"span",
-										{ className: "card-title left-align" },
-										data.title
-									)
-								)
-							),
-							React.createElement(
-								"div",
-								{ className: "card-content left-align" },
-								React.createElement(
-									"p",
-									null,
-									data.description
-								)
-							),
-							React.createElement(
-								"a",
-								{ className: "white-text modal-trigger", href: "#watchvideo" + index },
-								React.createElement(
-									"div",
-									{ className: "card-action", style: { 'backgroundColor': '#0081af' } },
-									"WATCH VIDEO"
-								)
-							)
-						)
-					),
-					React.createElement(
-						"div",
-						{ className: "modal", id: "watchvideo" + index },
-						React.createElement(
-							"div",
-							{ className: "modal-content" },
-							React.createElement(
-								"div",
-								{ className: "video-container" },
-								React.createElement("iframe", { width: "1102", height: "620", src: data.url, className: "responsive-video", frameBorder: "0", id: index, allowFullScreen: true })
-							)
-						),
-						React.createElement(
-							"div",
-							{ className: "modal-footer" },
-							React.createElement(
-								"a",
-								{ href: "#", onClick: "", className: "modal-action modal-close waves-effect waves-light btn-flat" },
-								"Close"
-							)
-						)
-					)
-				);
-			});
-
-			this.setState({ results: myResults });
-		},
-
-		// Here we render the function
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "row center-align" },
-				this.state.results
-			);
-		}
-	});
-
-	// Export the component back for use in other files
-	module.exports = Results;
-
-/***/ },
+/* 180 */,
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21530,77 +21460,86 @@
 	// Include React 
 	var React = __webpack_require__(1);
 
-	// This is the saved component. It will be used to show a log of saved articles.
-	var Saved = React.createClass({
-		displayName: "Saved",
+	// Component creation
+	var Navbar = React.createClass({
+	  displayName: "Navbar",
 
 
-		getInitialState: function getInitialState() {
-			return {
-				savedVideos: []
-			};
-		},
-
-		clickToDelete: function clickToDelete(result) {
-			this.props.deleteArticle(result);
-		},
-
-		componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-			var that = this;
-			console.log(nextProps);
-			var myResults = nextProps.savedArticles.map(function (search, i) {
-				var boundClick = that.clickToDelete.bind(that, search);
-				return React.createElement(
-					"div",
-					{ className: "list-group-item", key: i },
-					React.createElement(
-						"a",
-						{ href: search.url, target: "_blank" },
-						search.title
-					),
-					React.createElement("br", null),
-					search.date,
-					React.createElement("br", null),
-					React.createElement(
-						"button",
-						{ type: "button", className: "btn btn-success", style: { 'float': 'right', 'marginTop': '-39px' }, onClick: boundClick },
-						"Delete"
-					)
-				);
-			});
-
-			this.setState({ savedVideos: myResults });
-		},
-
-		// Here we render the function
-		render: function render() {
-
-			return React.createElement(
-				"div",
-				{ className: "panel panel-success" },
-				React.createElement(
-					"div",
-					{ className: "panel-heading" },
-					React.createElement(
-						"h3",
-						{ className: "panel-title text-center" },
-						React.createElement(
-							"strong",
-							null,
-							"Saved Videos"
-						)
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "panel-body" },
-					this.state.savedVideos
-				)
-			);
-		}
+	  // Here we render the function
+	  render: function render() {
+	    var links = this.props.isAuthorized ? [React.createElement(
+	      "li",
+	      null,
+	      React.createElement(
+	        "a",
+	        { className: "white-text", href: "/logout" },
+	        "Google Logout"
+	      )
+	    )] : [React.createElement(
+	      "li",
+	      null,
+	      React.createElement(
+	        "a",
+	        { className: "white-text", href: "/auth/google" },
+	        "Google Login"
+	      )
+	    )];
+	    return React.createElement(
+	      "nav",
+	      { role: "navigation", style: { 'backgroundColor': '#0081af' } },
+	      React.createElement(
+	        "div",
+	        { className: "nav-wrapper container" },
+	        React.createElement(
+	          "a",
+	          { id: "logo-container", href: "/", className: "brand-logo white-text" },
+	          "Captain Caption"
+	        ),
+	        React.createElement("img", { src: "assets/images/Captain-Caption-sm.png", alt: "Captain Caption", id: "topCapLogo" }),
+	        React.createElement(
+	          "ul",
+	          { className: "right hide-on-med-and-down" },
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "a",
+	              { className: "learnMore white-text" },
+	              "Learn More"
+	            )
+	          ),
+	          links
+	        ),
+	        React.createElement(
+	          "ul",
+	          { id: "nav-mobile", className: "side-nav", style: { 'backgroundColor': '#0081af' } },
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement(
+	              "a",
+	              { className: "learnMore white-text" },
+	              "Learn More"
+	            )
+	          ),
+	          links
+	        ),
+	        React.createElement(
+	          "a",
+	          { href: "#", "data-activates": "nav-mobile", className: "button-collapse white-text" },
+	          React.createElement(
+	            "i",
+	            { className: "material-icons" },
+	            "menu"
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 
-	module.exports = Saved;
+	// Export the component back for use in other files
+	module.exports = Navbar;
 
 /***/ },
 /* 182 */

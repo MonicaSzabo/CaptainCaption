@@ -5,8 +5,7 @@ var React = require('react');
 
 // Here we include all of the sub-components
 var Form = require('./Children/Form');
-var Results = require('./Children/Results');
-var Saved = require('./Children/Saved');
+var NavBar = require('./Children/Navbar');
 var LoadMore = require('./Children/LoadMore');
 
 // Helper Function
@@ -53,9 +52,10 @@ var Main = React.createClass({
 			nextPageToken: 'CAYQAA',
 			prevPageToken: null,
 			savedVideos: [],
-			userName: 'Anonymous, Sign In Up Top',
+			userName: 'Guest',
 			userID: null,
-			isAuthorized: false
+			isAuthorized: false,
+			pageNumber: 1
 		}
 	},	
 
@@ -103,6 +103,8 @@ var Main = React.createClass({
 			Materialize.toast("You're at the end!", 4000);
 		}
 		else if(this.state.nextPageToken) {
+			var page = this.state.pageNumber + 1;
+			this.setState({pageNumber: page});
 			helpers.runQueryWithToken(this.state.topic, this.state.nextPageToken)
 			.then(function(data){
 				this.setState({
@@ -110,9 +112,9 @@ var Main = React.createClass({
 					nextPageToken: data[1],
 					prevPageToken: data[2]
 				})
-			}.bind(this))   
+			}.bind(this))
 
-			$('html, body').animate({scrollTop: $("#topResults").offset().top}, 3000);
+			window.scrollTo(0, 0);
 		}
 	},
 
@@ -121,14 +123,18 @@ var Main = React.createClass({
 			Materialize.toast("You're at the beginning!", 4000);
 		}
 		else if(this.state.prevPageToken) {
+			var page = this.state.pageNumber - 1;
+			this.setState({pageNumber: page});
 			helpers.runQueryWithToken(this.state.topic, this.state.prevPageToken)
 			.then(function(data){
 				this.setState({
 					results: data[0],
 					nextPageToken: data[1],
-					prevPageToken: data[2]
+					prevPageToken: data[2] 
 				})
 			}.bind(this))
+
+			window.scrollTo(0, 0);
 		}
 		
 	},
@@ -136,19 +142,25 @@ var Main = React.createClass({
 	// If the component updates we'll run this code
 	componentDidUpdate: function(prevProps, prevState){
 
-		if(prevState.topic != this.state.topic){
+		if(prevState.topic != this.state.topic && this.state.topic){
 
 			helpers.runQuery(this.state.topic)
 				.then(function(data){
 					if (data != this.state.results)
 					{
 						this.setState({
+							pageNumber: 1,
 							results: data[0],
 							nextPageToken: data[1],
 							prevPageToken: data[2]
 						})
+
+						if(data[0].length == 0) {
+							Materialize.toast("No results!", 4000);
+						}
 					}
 				}.bind(this))
+
 		}
 	},
 
@@ -156,8 +168,8 @@ var Main = React.createClass({
 
 		axios.get('/authorize')
 			.then(function(data){
-
-				if(this.state.isAuthorized){
+				console.log("fromauthorize",data)
+				if(data.data.isAuthorized){
 					this.setState({
 						isAuthorized: data.data.isAuthorized,
 						userName: data.data.user.firstName,
@@ -167,29 +179,24 @@ var Main = React.createClass({
 					this.getVideo();
 				} else {
 					this.setState({
-						userName: 'Anonymous, Sign In Up Top',
+						userName: 'Guest',
 						userID: null
 					});
 				}
 			}.bind(this));
 
-
-		// axios.get('/api/saved')
-		// 	.then(function(response){
-		// 		this.setState({
-		// 			savedVideos: response.data
-		// 		});
-		// 	}.bind(this));
 	},
 
 	// Here we render the function
 	render: function(){
 		return(
+			  <div>
 
-			  <div className="section">
+			  	<NavBar isAuthorized={this.state.isAuthorized}/>
 
+			  	<div className="container">
 			  	<div className="row center-align">
-			      <h4>Welcome {this.state.userName}!</h4>
+			      <h4>Welcome {this.state.userName}! View <a className="modal-trigger" href="#savedVideos">Saved Videos</a>?</h4>
 			      <br />
 			    </div>
 
@@ -200,9 +207,12 @@ var Main = React.createClass({
 				</div>
 
 			    <div className="row center-align" id="topResults">
-			      <h4>Results for "{this.state.topic}"</h4>
+			      	<h4>Results for "{this.state.topic}"</h4>
+			    	<p>Page Number: {this.state.pageNumber}</p>
 			      <br />
 			    </div>
+
+
 			    <div className="row center-align">
 			    {this.state.results.map((data, index) =>{
 			    	return  <div  key={"results"+index} className="main">
@@ -213,7 +223,7 @@ var Main = React.createClass({
 			    					<span className="card-title left-align">{data.title}</span></a>
 			    				</div>
 		    					<div className="card-content left-align">
-          							<p>{data.description}</p>
+          							<p style={{'lineHeight': '24px'}}>{data.description}</p>
         						</div>
         						<a className="white-text modal-trigger" href={"#watchvideo"+index}><div className="card-action col s6 m6 l6" style={{'backgroundColor':'#0081af'}}>
 					              WATCH VIDEO
@@ -231,7 +241,11 @@ var Main = React.createClass({
 			    					</iframe>
  			    				   </div>
 							    </div>
-							    <div className="modal-footer">
+							    <div className="card-action white-text waves-effect waves-light btn-flat" style={{'backgroundColor':'#1b998b', 'cursor':'pointer'}}><a className="white-text" onClick={()=>{this.saveVideo(data.url, data.title, data.description, data.thumbnail, this.state.userID)}}>
+					              	SAVE VIDEO
+					      			</a></div>
+					      			<br />
+							    <div className="modal-content">
      								<a href="#" className="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
    								</div>
 							</div>
@@ -241,14 +255,18 @@ var Main = React.createClass({
 
 			    <LoadMore prevPage={this.prevPage} nextPage={this.nextPage} />
 
+			    </div>
+
 			    <div className="main row center-align">
 			    <div className="modal" id="savedVideos">
 				    <div className="modal-content center-align">
 				      <h4>Saved Videos</h4>
+				      <p>Click the video picture to play it in a new window!</p>
 				      <div className="row">
-				      	{this.state.savedVideos.map((data, index) =>{return <div key={"vid"+index} id="vid">
+				      	{this.state.savedVideos.length > 0 ? 
+				      		this.state.savedVideos.map((data, index) =>{return <div key={"vid"+index} id="vid">
 				      		<div className="col s12 m6 l4">
-			    			<div className="card hoverable">
+			    			<div className="card">
 			    				<div className="card-image">
 			    					<a className="modal-trigger" href={data.url} target="_blank"><img src={data.thumbnail} alt="Video Thumbnail"/>
 			    					<span className="card-title left-align">{data.title}</span></a>
@@ -258,7 +276,9 @@ var Main = React.createClass({
 					            </div></a>
 			    			</div>
 			    			</div>
-			    		</div>})}
+			    		</div>})
+			    		:
+			    		<div id="noVideos">You do not have any videos currently saved</div>}
 				      </div>
 				    </div>
 				    <div className="modal-footer">
