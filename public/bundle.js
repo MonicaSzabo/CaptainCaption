@@ -21471,7 +21471,7 @@
 	      null,
 	      React.createElement(
 	        "a",
-	        { className: "white-text", href: "/logout" },
+	        { className: "white-text", href: "https://captaincaption.herokuapp.com/logout" },
 	        "Google Logout"
 	      )
 	    )] : [React.createElement(
@@ -21479,7 +21479,7 @@
 	      null,
 	      React.createElement(
 	        "a",
-	        { className: "white-text", href: "/auth/google" },
+	        { className: "white-text", href: "https://captaincaption.herokuapp.com/auth/google" },
 	        "Google Login"
 	      )
 	    )];
