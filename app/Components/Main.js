@@ -30,20 +30,20 @@ var Main = React.createClass({
 				title:"Inside A Volcano: Explorer Travels To The World's Most Extreme Environments",
 				url:"https://www.youtube.com/embed/w-zFVW-wEx0?cc_load_policy=1"},
 				{
+				description:"Volcanoes can show nature's rage. What are the biggest eruptions we've witnessed in our history? Hosted by: Michael Aranda ---------- Support SciShow by ...",
+				thumbnail:"https://i.ytimg.com/vi/W6GdF6zY5J8/hqdefault.jpg",
+				title:"Volcanoes: Mother of Disasters",
+				url:"https://www.youtube.com/embed/W6GdF6zY5J8?cc_load_policy=1"},
+				{
 				description:"A song to help teach about volcanoes- eruptions, magma, lava, and more! (lyrics below) See more of Mr. R.'s free science resources at sciencepoems.net ...",
 				thumbnail:"https://i.ytimg.com/vi/bwTkTzdkVS4/hqdefault.jpg",
 				title:"Volcano Song",
 				url:"https://www.youtube.com/embed/bwTkTzdkVS4?cc_load_policy=1"},
 				{
-				description:"HooplakidzLab is back with a brand new science experiment video, Volcano of Vinegar. I hope you like the new style. Join me on Facebook: ...",
-				thumbnail:"https://i.ytimg.com/vi/ghth9zAd_hQ/hqdefault.jpg",
-				title:"Vinegar Volcano Science Experiment by HooplakidzLab",
-				url:"https://www.youtube.com/embed/ghth9zAd_hQ?cc_load_policy=1"},
-				{
-				description:"Volcano potato recipe. Epic hollowed potato wrapped in bbq sauce coated bacon, with gooey cheese filling, sriracha topping! So good! Subscribe for regular ...",
-				thumbnail:"https://i.ytimg.com/vi/LT60qV329_E/hqdefault.jpg",
-				title:"VOLCANO POTATO",
-				url:"https://www.youtube.com/embed/LT60qV329_E?cc_load_policy=1"},
+				description:"This video describes the features geologists use to classify common types of volcanoes. We compare and contrast the features of two types of large volcanoes ...",
+				thumbnail:"https://i.ytimg.com/vi/iavbdqsSC1o/hqdefault.jpg",
+				title:"How to Classify Volcanoes",
+				url:"https://www.youtube.com/embed/iavbdqsSC1o?cc_load_policy=1"},
 				{
 				description:"One of the most dramatic landforms on the planet, volcanoes come in many different shapes and sizes. Learn how volcanoes form, what types and structures ...",
 				thumbnail:"https://i.ytimg.com/vi/V863xR0Y2qk/hqdefault.jpg",

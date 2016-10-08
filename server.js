@@ -31,8 +31,8 @@ app.use(passport.session());
 
 require('./auth/passport.js')(app, passport);
 
-mongoose.connect('mongodb://localhost/captaincaption');
-//mongoose.connect('mongodb://heroku_jns4phwt:61tt9c1oiotedcl5ndjhfv9pn5@ds019936.mlab.com:19936/heroku_jns4phwt');
+//mongoose.connect('mongodb://localhost/captaincaption');
+mongoose.connect('mongodb://heroku_0vl39fmz:fqr3rmc2u2rqqrtt09msm1u36l@ds053156.mlab.com:53156/heroku_0vl39fmz');
 
 var db = mongoose.connection;
 
