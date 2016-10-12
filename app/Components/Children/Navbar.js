@@ -9,8 +9,8 @@ var Navbar = React.createClass({
   render: function(){
      var links = this.props.isAuthorized ? 
                 (
-                  [<li><a className="white-text" href="https://captaincaption.herokuapp.com/logout">Google Logout</a></li>]
-                ) : ([<li><a className="white-text" href="https://captaincaption.herokuapp.com/auth/google">Google Login</a></li>])
+                  [<li key="googleout"><a className="white-text" href="https://captaincaption.herokuapp.com/logout">Google Logout</a></li>]
+                ) : ([<li key="googlein"><a className="white-text" href="https://captaincaption.herokuapp.com/auth/google">Google Login</a></li>])
     return(
       <nav role="navigation" style={{'backgroundColor':'#0081af'}}>
         <div className="nav-wrapper container">

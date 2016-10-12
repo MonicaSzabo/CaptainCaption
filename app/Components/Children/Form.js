@@ -20,7 +20,8 @@ var Form = React.createClass({
 	},
 
 	// When a user submits... 
-	handleClick: function(){
+	handleClick: function(e){
+		e.preventDefault();
 		// Set the parent to have the search term
 		this.props.setTerm(this.state.topic);
 	},
@@ -30,14 +31,14 @@ var Form = React.createClass({
 
 		return(
 			<div className="searchForm">
-				<form id="searching">
+				<form id="searching" onSubmit={this.handleClick}>
 					<div className="input-field col s12">
 						<i className="material-icons prefix">search</i>
 						<input id="topic" type="text" className="validate" onChange= {this.handleChange}/>
 						<label htmlFor="topic">Search by Topic</label>
 					</div>
 					<div className="row center-align">
-						<button type="button" className="btn btn-primary waves-effect waves-light btn" onClick={this.handleClick} style={{backgroundColor:'#0081af'}}>Search</button>
+						<button type="submit" className="btn btn-primary waves-effect waves-light btn" style={{backgroundColor:'#0081af'}}>Search</button>
 					</div>
 				</form>
 			</div>

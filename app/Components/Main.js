@@ -91,7 +91,6 @@ var Main = React.createClass({
 	getVideo: function(){
 		axios.get('/api/saved/'+this.state.userID)
 			.then(function(response){
-				console.log("response", response)
 				this.setState({
 					savedVideos: response.data
 				});
@@ -168,7 +167,6 @@ var Main = React.createClass({
 
 		axios.get('/authorize')
 			.then(function(data){
-				console.log("fromauthorize",data)
 				if(data.data.isAuthorized){
 					this.setState({
 						isAuthorized: data.data.isAuthorized,

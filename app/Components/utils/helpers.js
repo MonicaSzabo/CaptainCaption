@@ -77,7 +77,6 @@ var helpers = {
 		axios.post('/api/saved', {url: url, title: title, description: description, thumbnail: thumbnail, userID: userID})
 		.then(function(results){
 
-			console.log("Posted to MongoDB");
 			return(results);
 		})
 	}

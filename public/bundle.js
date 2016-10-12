@@ -19843,7 +19843,6 @@
 
 		getVideo: function getVideo() {
 			axios.get('/api/saved/' + this.state.userID).then(function (response) {
-				console.log("response", response);
 				this.setState({
 					savedVideos: response.data
 				});
@@ -19911,7 +19910,6 @@
 		componentDidMount: function componentDidMount() {
 
 			axios.get('/authorize').then(function (data) {
-				console.log("fromauthorize", data);
 				if (data.data.isAuthorized) {
 					this.setState({
 						isAuthorized: data.data.isAuthorized,
@@ -21404,7 +21402,8 @@
 		},
 
 		// When a user submits... 
-		handleClick: function handleClick() {
+		handleClick: function handleClick(e) {
+			e.preventDefault();
 			// Set the parent to have the search term
 			this.props.setTerm(this.state.topic);
 		},
@@ -21417,7 +21416,7 @@
 				{ className: "searchForm" },
 				React.createElement(
 					"form",
-					{ id: "searching" },
+					{ id: "searching", onSubmit: this.handleClick },
 					React.createElement(
 						"div",
 						{ className: "input-field col s12" },
@@ -21438,7 +21437,7 @@
 						{ className: "row center-align" },
 						React.createElement(
 							"button",
-							{ type: "button", className: "btn btn-primary waves-effect waves-light btn", onClick: this.handleClick, style: { backgroundColor: '#0081af' } },
+							{ type: "submit", className: "btn btn-primary waves-effect waves-light btn", style: { backgroundColor: '#0081af' } },
 							"Search"
 						)
 					)
@@ -21468,7 +21467,7 @@
 	  render: function render() {
 	    var links = this.props.isAuthorized ? [React.createElement(
 	      "li",
-	      null,
+	      { key: "googleout" },
 	      React.createElement(
 	        "a",
 	        { className: "white-text", href: "https://captaincaption.herokuapp.com/logout" },
@@ -21476,7 +21475,7 @@
 	      )
 	    )] : [React.createElement(
 	      "li",
-	      null,
+	      { key: "googlein" },
 	      React.createElement(
 	        "a",
 	        { className: "white-text", href: "https://captaincaption.herokuapp.com/auth/google" },
@@ -21661,7 +21660,6 @@
 
 			axios.post('/api/saved', { url: url, title: title, description: description, thumbnail: thumbnail, userID: userID }).then(function (results) {
 
-				console.log("Posted to MongoDB");
 				return results;
 			});
 		}
