@@ -232,7 +232,7 @@ var Main = React.createClass({
 			    			</div>
 			    			</div>
 
-			    			<div className="modal" id={"watchvideo"+index}>
+			    			<div className="modal videoModal" id={"watchvideo"+index}>
 							    <div className="modal-content">
 							      <div className="video-container">
 			   						<iframe width="1102" height="620" src={data.url} className="responsive-video" frameBorder="0" id={index} allowFullScreen>

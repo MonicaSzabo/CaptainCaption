@@ -20039,7 +20039,7 @@
 								),
 								React.createElement(
 									'div',
-									{ className: 'modal', id: "watchvideo" + index },
+									{ className: 'modal videoModal', id: "watchvideo" + index },
 									React.createElement(
 										'div',
 										{ className: 'modal-content' },
