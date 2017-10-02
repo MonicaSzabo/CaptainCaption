@@ -9,7 +9,7 @@
   "author": "Monica Szabo",
   "license": "ISC",
   "engines": {
-    "node": "4.4.7"
+    "node": "4.8.4"
   },
   "dependencies": {
     "axios": "^0.12.0",
