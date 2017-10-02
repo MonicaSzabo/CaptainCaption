@@ -15,9 +15,9 @@ module.exports = function(app, passport){
 	});
 
 	passport.use(new GoogleStrategy({
-	    clientID: keys.googleAuth.clientID,
-	    clientSecret: keys.googleAuth.clientSecret,
-	    callbackURL: keys.googleAuth.callbackURL
+	    clientID: process.env.clientID,
+	    clientSecret: process.env.clientSecret,
+	    callbackURL: process.env.callbackURL
 	  },
 	  function(accessToken, refreshToken, profile, done) {
 	  	process.nextTick(function(){
